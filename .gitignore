@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
+1.현지수배/
+2.고객전달/
+*.xlsx
+*.pdf
+_*.py
+_*.txt
