@@ -310,7 +310,7 @@
             <div class="map-wrap max-w-5xl mx-auto border border-slate-200 rounded-2xl p-1 shadow-lg bg-white relative z-0">
                 <div id="map"></div>
                 <div id="map-distance" class="hidden">
-                    <p class="text-[10px] font-bold text-slate-400 tracking-wide">단체 이동 (보수적 기준)</p>
+                    <p class="text-[10px] font-bold text-slate-400 tracking-wide">예상 이동 시간</p>
                     <p id="map-distance-leg" class="font-bold text-xs text-slate-800 leading-snug mt-0.5"></p>
                     <p id="map-distance-time" class="font-black text-sm text-indigo-600 mt-0.5"></p>
                     <p id="map-distance-km" class="text-[10px] font-bold text-slate-500 mt-0.5"></p>
@@ -324,11 +324,11 @@
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-4 border-b border-slate-100">
                     <div>
                         <h3 class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2 font-title">
-                            <i class="fa-solid fa-bus-simple text-indigo-600"></i> 구간별 예상 이동 소요시간 (단체여행 보수적 기준)
+                            <i class="fa-solid fa-bus-simple text-indigo-600"></i> 구간별 예상 이동 소요시간
                         </h3>
-                        <p class="text-xs text-slate-500 mt-1">실제 항공 스케줄(1시간 10분)과 제주 현지 도로 사정(5030 구간단속·겨울 중산간 도로·시내 신호), 16명 단체버스 승하차·인원점검 시간을 여유 있게 반영했습니다.</p>
+                        <p class="text-xs text-slate-500 mt-1">항공·현지 이동 기준의 대략적인 소요시간입니다. 교통·현지 사정에 따라 달라질 수 있습니다.</p>
                     </div>
-                    <span class="self-start sm:self-center shrink-0 bg-indigo-50 text-indigo-700 border border-indigo-200 text-[11px] font-bold px-3 py-1 rounded-full">전용버스 · 단체 기준</span>
+                    <span class="self-start sm:self-center shrink-0 bg-indigo-50 text-indigo-700 border border-indigo-200 text-[11px] font-bold px-3 py-1 rounded-full">전용버스 이동</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 text-xs">
                     <div class="bg-sky-50/60 rounded-xl p-4 border border-sky-100">
@@ -417,7 +417,7 @@
                                     <h4 class="font-bold text-lg">10:40 청주 출발 · 11:50 제주 도착</h4>
                                     <span class="bg-sky-100 text-sky-800 text-xs font-bold px-2.5 py-0.5 rounded-full">✈️ 실비행 1시간 10분</span>
                                 </div>
-                                <p class="text-slate-500 text-sm mt-1">제주공항 도착 후 단체 수하물 수취 및 현지 기사님 미팅(약 25~30분 소요) 후 이동합니다.</p>
+                                <p class="text-slate-500 text-sm mt-1">제주공항 도착 후 수하물 수취 및 현지 기사님 미팅 뒤 이동합니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-sky-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-red-400"></div>
@@ -425,7 +425,7 @@
                                     <h4 class="font-bold text-lg">중식 (흑우불고기정식)</h4>
                                     <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 공항→식당 약 20~25분</span>
                                 </div>
-                                <p class="text-slate-500 text-sm mt-1">제주시내 도로 신호 및 단체버스 승하차를 고려한 이동입니다.</p>
+                                <p class="text-slate-500 text-sm mt-1">공항에서 중식 장소로 이동합니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-sky-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-cyan-500"></div>
@@ -435,7 +435,7 @@
                                             <h4 class="font-bold text-lg">산방산유람선</h4>
                                             <span class="bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 평화로 단체이동 약 55분~1시간 (공항기준 총 1시간 15분)</span>
                                         </div>
-                                        <p class="text-slate-500 text-sm mt-1">평화로 구간단속 및 화순항 대형버스 주차·승하차 여유를 반영해 이동 후 서귀포 앞바다를 유람선으로 둘러봅니다.</p>
+                                        <p class="text-slate-500 text-sm mt-1">산방산 인근으로 이동한 뒤 서귀포 앞바다를 유람선으로 둘러봅니다.</p>
                                     </div>
                                     <img src="assets/images/day1-sanbang.jpg" alt="산방산유람선" class="schedule-thumb">
                                 </div>
@@ -526,7 +526,7 @@
                                             <h4 class="font-bold text-lg">삼달리 꽃밭에서 (동백)</h4>
                                             <span class="bg-pink-50 text-pink-700 border border-pink-200 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 단체이동 약 35분 (워터쇼 기준 17km)</span>
                                         </div>
-                                        <p class="text-slate-500 text-sm mt-1">성읍~삼달리 읍면 도로 대형버스 서행 구간을 고려해 이동 후 동백 포토타임을 갖습니다.</p>
+                                        <p class="text-slate-500 text-sm mt-1">삼달리꽃밭으로 이동한 뒤 동백 포토타임을 갖습니다.</p>
                                     </div>
                                     <img src="assets/images/day2-camellia.jpg" alt="삼달리 동백 꽃밭" class="schedule-thumb">
                                 </div>
@@ -574,7 +574,7 @@
                             <div class="relative pl-8 border-l-2 border-emerald-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-teal-400"></div>
                                 <h4 class="font-bold text-lg">기상 및 조식 후 관광 출발</h4>
-                                <p class="text-slate-500 text-sm mt-1">호텔식 조식 · 짐을 챙겨 체크아웃 및 단체 수하물 적재 후 출발합니다.</p>
+                                <p class="text-slate-500 text-sm mt-1">호텔식 조식 후 짐을 챙겨 체크아웃하고 출발합니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-emerald-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-amber-600"></div>
@@ -582,7 +582,7 @@
                                     <h4 class="font-bold text-lg">농수산쇼핑센타</h4>
                                     <span class="bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 단체이동 약 20분 (3km)</span>
                                 </div>
-                                <p class="text-slate-500 text-sm mt-1">제주시내 아침 신호 및 단체 승하차를 고려해 이동하며, 제주 농수산물을 둘러봅니다.</p>
+                                <p class="text-slate-500 text-sm mt-1">제주 농수산물을 둘러보며 기념품·특산물을 고를 수 있습니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-emerald-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-green-600"></div>
@@ -592,7 +592,7 @@
                                             <h4 class="font-bold text-lg">사려니숲길</h4>
                                             <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 단체이동 약 45분 (21km)</span>
                                         </div>
-                                        <p class="text-slate-500 text-sm mt-1">중산간 도로 서행 및 대형버스 주차장 도보 이동 여유를 감안해 도착 후 삼림욕을 즐깁니다.</p>
+                                        <p class="text-slate-500 text-sm mt-1">사려니숲길에 도착해 삼림욕을 즐깁니다.</p>
                                     </div>
                                     <img src="assets/images/day3-saryeoni.jpg" alt="사려니숲길" class="schedule-thumb">
                                 </div>
