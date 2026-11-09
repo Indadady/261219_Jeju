@@ -3,7 +3,7 @@
 | File | Source | License |
 |------|--------|---------|
 | hero.jpg | [Commons: File:Saeyeon-gyo.jpg](https://commons.wikimedia.org/wiki/File:Saeyeon-gyo.jpg) | CC BY-SA |
-| og-thumb.jpg | [Commons: File:Seongsan Ilchulbong from the air.jpg](https://commons.wikimedia.org/wiki/File:Seongsan_Ilchulbong_from_the_air.jpg) | CC BY-SA 2.0 |
+| og-thumb.jpg | [Commons: File:Daepo Jusangjeolli Cliff 01.jpg](https://commons.wikimedia.org/wiki/File:Daepo_Jusangjeolli_Cliff_01.jpg) | CC BY-SA |
 | hotel-exterior.jpg | Hotel Air City Jeju 전경 — [aircity.jejucityhotel.com](https://aircity.jejucityhotel.com/en/) | 호텔 안내 사진 |
 | hotel-room.jpg | Hotel Air City Jeju 객실 — [aircity.jejucityhotel.com](https://aircity.jejucityhotel.com/en/) | 호텔 안내 사진 |
 | day1-gotjawal.jpg | [Commons: File:Gotjawal Forest on Jeju Island-01.jpg](https://commons.wikimedia.org/wiki/File:Gotjawal_Forest_on_Jeju_Island-01.jpg) | CC BY-SA |
