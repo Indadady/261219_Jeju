@@ -26,7 +26,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <style>
         body { font-family: 'Noto Sans KR', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        body.tm-secure-select { -webkit-user-select: none; user-select: none; }
+        body.tm-secure-select input, body.tm-secure-select textarea, body.tm-secure-select [contenteditable="true"] { -webkit-user-select: text; user-select: text; }
         .font-title { font-family: 'Jua', sans-serif; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-4px)} 40%,80%{transform:translateX(4px)} }
+        .shake { animation: shake .4s ease-in-out; }
         .hero-bg {
             background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('assets/images/hero.jpg');
             background-size: cover; background-position: center; background-attachment: fixed;
@@ -162,7 +166,22 @@
         }
     </style>
 </head>
-<body class="antialiased pb-20 md:pb-0 print:pb-0 print:bg-white">
+<body class="antialiased pb-20 md:pb-0 print:pb-0 print:bg-white tm-secure-select">
+    <div id="guidebook-lock-modal" class="fixed inset-0 z-[999] hidden items-center justify-center bg-slate-900/90 backdrop-blur-md px-4 no-print print-hidden" role="dialog" aria-modal="true" aria-labelledby="guidebook-lock-title">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 md:p-8 shadow-2xl text-center border border-slate-100 animate-fade-in-up">
+            <div class="w-16 h-16 bg-blue-50 text-[#004098] rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-sm"><i class="fa-solid fa-lock"></i></div>
+            <h3 id="guidebook-lock-title" class="text-xl font-bold text-slate-800 mb-1">보안 접속 인증</h3>
+            <p class="text-xs text-slate-500 mb-6 leading-relaxed">본 가이드북은 저작권 및 일정 보호를 위해<br>출발 2주 전까지 비밀번호 인증이 필요합니다.<br>
+                <span class="text-xs font-bold text-[#004098] mt-1 block">💡 힌트: 출발일 MM월DD일 → MMDD (예: 01월01일 → 0101)</span>
+            </p>
+            <div class="space-y-3">
+                <input type="password" id="lock-password-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="비밀번호 4자리 입력" class="w-full text-center tracking-widest text-lg font-bold border-2 border-slate-200 focus:border-[#004098] rounded-2xl px-4 py-3 outline-none transition" aria-label="비밀번호 4자리">
+                <button type="button" onclick="verifyGuidebookPassword()" class="w-full bg-[#004098] hover:bg-[#002d6b] text-white font-bold py-3.5 rounded-2xl shadow-md transition text-sm">가이드북 입장하기</button>
+            </div>
+            <p id="lock-error-msg" class="text-xs text-rose-600 font-bold mt-3 hidden">비밀번호가 일치하지 않습니다.</p>
+            <div class="mt-6 pt-4 border-t border-slate-100 text-[10px] text-slate-400">[System Powered by TOURMAKER] 지적재산권 보호 구역</div>
+        </div>
+    </div>
     <div class="print:hidden">
     <header class="bg-white/95 backdrop-blur-md shadow-md sticky top-0 z-50">
         <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -208,7 +227,7 @@
             <span class="bg-indigo-600/90 px-6 py-2 rounded-full text-lg md:text-xl font-bold mb-6 inline-block border border-white/20 shadow-lg font-title tracking-wide">정선군여성단체협의회</span>
             <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg font-title">겨울 제주 여행<br><span class="text-yellow-400 font-bold">2박 3일</span></h1>
             <p id="hero-date" class="text-xl md:text-2xl text-white font-bold tracking-wide mb-2">2026. 12. 19(토) ~ 12. 21(월)</p>
-            <p id="hero-desc" class="text-sm md:text-base text-slate-200 font-medium tracking-wide">청주공항에서 제주로, 산방산유람선·에코랜드·스카이워터쇼·감귤따기·사려니숲길을 잇는 일정 안내입니다.</p>
+            <p id="hero-desc" class="text-sm md:text-base text-slate-200 font-medium tracking-wide">청주공항에서 제주로, 산양곶자왈·새별오름·문화교육·스카이워터쇼·감귤따기·알로에숲을 잇는 일정 안내입니다.</p>
         </div>
     </section>
 
@@ -220,22 +239,22 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
                 <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 shadow-sm">
-                    <div class="w-14 h-14 bg-sky-100 rounded-2xl flex items-center justify-center mb-4 text-3xl">🚢</div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-2">산방산유람선과 포토스팟</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed mb-4"><span class="text-sky-700 font-bold">산방산유람선</span>으로 서귀포 앞바다를 둘러보고, <span class="text-sky-700 font-bold">새별오름</span> 또는 <span class="text-sky-700 font-bold">이호테우 말등대</span> 중 한 곳에서 사진을 남깁니다.</p>
-                    <span class="inline-block bg-sky-600 text-white text-xs px-2 py-1 rounded font-bold">유람선 · 포토</span>
+                    <div class="w-14 h-14 bg-sky-100 rounded-2xl flex items-center justify-center mb-4 text-3xl">🌿</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">곶자왈 힐링과 포토</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4"><span class="text-sky-700 font-bold">산양곶자왈</span>에서 제주의 숲을 걷고, <span class="text-sky-700 font-bold">새별오름</span> 입구에서 사진을 남깁니다. 저녁에는 호텔 세미나실에서 <span class="text-sky-700 font-bold">여성단체 문화교육</span>이 이어집니다.</p>
+                    <span class="inline-block bg-sky-600 text-white text-xs px-2 py-1 rounded font-bold">힐링 · 교육</span>
                 </div>
                 <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 shadow-sm">
-                    <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mb-4 text-3xl">🚂</div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-2">에코랜드·워터쇼·체험</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed mb-4"><span class="text-green-700 font-bold">에코랜드</span> 궤도열차와 <span class="text-green-700 font-bold">스카이워터쇼</span>, <span class="text-green-700 font-bold">삼달리 꽃밭</span>·감귤따기로 이어집니다.</p>
-                    <span class="inline-block bg-green-600 text-white text-xs px-2 py-1 rounded font-bold">자연 · 공연 · 체험</span>
+                    <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mb-4 text-3xl">💦</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">워터쇼·꽃밭·감귤·알로에</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4"><span class="text-green-700 font-bold">스카이워터쇼</span>와 <span class="text-green-700 font-bold">삼달리 꽃밭</span>, <span class="text-green-700 font-bold">감귤따기</span>, <span class="text-green-700 font-bold">김정문알로에숲</span>으로 이어지는 하루입니다.</p>
+                    <span class="inline-block bg-green-600 text-white text-xs px-2 py-1 rounded font-bold">공연 · 체험</span>
                 </div>
                 <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 shadow-sm">
-                    <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center mb-4 text-3xl">🌲</div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-2">사려니숲길과 족욕</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed mb-4"><span class="text-emerald-700 font-bold">사려니숲길</span>에서 삼림욕을 즐기고, <span class="text-emerald-700 font-bold">아로마·한방 족욕</span> 중 하나로 여정을 마무리합니다.</p>
-                    <span class="inline-block bg-emerald-600 text-white text-xs px-2 py-1 rounded font-bold">숲 · 휴식</span>
+                    <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center mb-4 text-3xl">🦶</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">쇼핑과 아로마족욕</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4"><span class="text-emerald-700 font-bold">농수산물쇼핑센타</span>와 <span class="text-emerald-700 font-bold">아로마족욕</span>으로 여정을 마무리한 뒤 청주로 돌아갑니다.</p>
+                    <span class="inline-block bg-emerald-600 text-white text-xs px-2 py-1 rounded font-bold">쇼핑 · 휴식</span>
                 </div>
             </div>
         </div>
@@ -258,12 +277,12 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6 text-sm">
                             <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                                <p class="font-bold text-slate-800 mb-1">가는 편 · 12/19(토) <span class="text-indigo-600 text-xs font-extrabold ml-1">실비행 1시간 10분</span></p>
-                                <p class="text-slate-600">청주공항 10:40 출발 → 제주공항 11:50 도착 · 수하물 수취 및 기사님 미팅(약 25~30분)</p>
+                                <p class="font-bold text-slate-800 mb-1">가는 편 · 12/19(토) <span class="text-indigo-600 text-xs font-extrabold ml-1">실비행 1시간 15분</span></p>
+                                <p class="text-slate-600">청주공항 10:50 출발 → 제주공항 12:05 도착 · 수하물 수취 및 기사님 미팅</p>
                             </div>
                             <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
                                 <p class="font-bold text-slate-800 mb-1">오는 편 · 12/21(월) <span class="text-indigo-600 text-xs font-extrabold ml-1">실비행 1시간 10분</span></p>
-                                <p class="text-slate-600">13:00 제주공항 도착 후 단체수속 · 14:05 출발 → 청주공항 15:15 도착</p>
+                                <p class="text-slate-600">제주공항 단체수속 후 14:05 출발 → 청주공항 15:15 도착</p>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
@@ -316,7 +335,7 @@
                         </div>
                     </div>
                     <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 text-xs text-slate-600 space-y-1.5 mb-5">
-                        <p><strong class="text-indigo-700">가는 편</strong> · 12/19 청주 10:40 → 제주 11:50</p>
+                        <p><strong class="text-indigo-700">가는 편</strong> · 12/19 청주 10:50 → 제주 12:05</p>
                         <p><strong class="text-indigo-700">오는 편</strong> · 12/21 제주 14:05 → 청주 15:15</p>
                     </div>
                     <p class="text-xs text-slate-500">※ 이용 항공사 앱·홈페이지에서 체크인·좌석 안내를 확인하실 수 있습니다.</p>
@@ -381,9 +400,9 @@
             </div>
             <div class="flex flex-wrap justify-center gap-2 mb-6">
                 <button type="button" onclick="filterMap('all')" id="btn-map-all" class="map-btn px-4 py-2 rounded-full text-sm font-bold bg-slate-800 text-white shadow-sm transition-colors">전체 여정</button>
-                <button type="button" onclick="filterMap('day1')" id="btn-map-day1" class="map-btn px-4 py-2 rounded-full text-sm font-bold bg-white border border-slate-300 text-slate-600 shadow-sm transition-colors">1일차(유람선·포토)</button>
-                <button type="button" onclick="filterMap('day2')" id="btn-map-day2" class="map-btn px-4 py-2 rounded-full text-sm font-bold bg-white border border-slate-300 text-slate-600 shadow-sm transition-colors">2일차(에코·워터쇼)</button>
-                <button type="button" onclick="filterMap('day3')" id="btn-map-day3" class="map-btn px-4 py-2 rounded-full text-sm font-bold bg-white border border-slate-300 text-slate-600 shadow-sm transition-colors">3일차(사려니·귀국)</button>
+                <button type="button" onclick="filterMap('day1')" id="btn-map-day1" class="map-btn px-4 py-2 rounded-full text-sm font-bold bg-white border border-slate-300 text-slate-600 shadow-sm transition-colors">1일차(곶자왈·오름)</button>
+                <button type="button" onclick="filterMap('day2')" id="btn-map-day2" class="map-btn px-4 py-2 rounded-full text-sm font-bold bg-white border border-slate-300 text-slate-600 shadow-sm transition-colors">2일차(워터쇼·체험)</button>
+                <button type="button" onclick="filterMap('day3')" id="btn-map-day3" class="map-btn px-4 py-2 rounded-full text-sm font-bold bg-white border border-slate-300 text-slate-600 shadow-sm transition-colors">3일차(쇼핑·귀국)</button>
             </div>
             <div class="map-wrap max-w-5xl mx-auto border border-slate-200 rounded-2xl p-1 shadow-lg bg-white relative z-0">
                 <div id="map"></div>
@@ -412,39 +431,37 @@
                     <div class="bg-sky-50/60 rounded-xl p-4 border border-sky-100">
                         <p class="font-black text-sky-800 text-sm mb-2.5 flex items-center justify-between">
                             <span>1일차 (12/19 토)</span>
-                            <span class="text-[11px] bg-white text-sky-700 px-2 py-0.5 rounded-full border border-sky-200">항공+서부·남부</span>
+                            <span class="text-[11px] bg-white text-sky-700 px-2 py-0.5 rounded-full border border-sky-200">항공+서부</span>
                         </p>
                         <ul class="space-y-2 text-slate-700">
-                            <li class="flex justify-between items-center gap-2"><span>✈️ 청주공항 → 제주공항</span><strong class="text-sky-700 shrink-0">1시간 10분 (실비행)</strong></li>
-                            <li class="flex justify-between items-center gap-2"><span>🚌 제주공항 →(중식)→ 산방산</span><strong class="text-slate-900 shrink-0">약 1시간 15분 (42km)</strong></li>
-                            <li class="flex justify-between items-center gap-2"><span>🚌 산방산유람선 → 새별오름</span><strong class="text-slate-900 shrink-0">약 40분 (20km)</strong></li>
-                            <li class="flex justify-between items-center gap-2"><span class="text-slate-500">└ 이호테우 선택 시 (산방산→이호)</span><strong class="text-slate-600 shrink-0">약 1시간 (38km)</strong></li>
-                            <li class="flex justify-between items-center gap-2"><span>🚌 새별오름 →(석식)→ 호텔</span><strong class="text-slate-900 shrink-0">약 50분 (24km)</strong></li>
+                            <li class="flex justify-between items-center gap-2"><span>✈️ 청주공항 → 제주공항</span><strong class="text-sky-700 shrink-0">1시간 15분 (실비행)</strong></li>
+                            <li class="flex justify-between items-center gap-2"><span>🚌 제주공항 →(중식)→ 산양곶자왈</span><strong class="text-slate-900 shrink-0">약 1시간 10분</strong></li>
+                            <li class="flex justify-between items-center gap-2"><span>🚌 산양곶자왈 → 새별오름</span><strong class="text-slate-900 shrink-0">약 25분</strong></li>
+                            <li class="flex justify-between items-center gap-2"><span>🚌 새별오름 → 에어시티호텔</span><strong class="text-slate-900 shrink-0">약 40분</strong></li>
                         </ul>
                     </div>
                     <div class="bg-green-50/60 rounded-xl p-4 border border-green-100">
                         <p class="font-black text-green-800 text-sm mb-2.5 flex items-center justify-between">
                             <span>2일차 (12/20 일)</span>
-                            <span class="text-[11px] bg-white text-green-700 px-2 py-0.5 rounded-full border border-green-200">중산간·동부·남부</span>
+                            <span class="text-[11px] bg-white text-green-700 px-2 py-0.5 rounded-full border border-green-200">동부·체험</span>
                         </p>
                         <ul class="space-y-2 text-slate-700">
-                            <li class="flex justify-between items-center gap-2"><span>🚌 호텔 → 에코랜드</span><strong class="text-slate-900 shrink-0">약 50분 (21km)</strong></li>
-                            <li class="flex justify-between items-center gap-2"><span>🚌 에코랜드 → 스카이워터쇼</span><strong class="text-slate-900 shrink-0">약 25분 (9km)</strong></li>
-                            <li class="flex justify-between items-center gap-2"><span>🚌 워터쇼 →(중식)→ 삼달리꽃밭</span><strong class="text-slate-900 shrink-0">약 35분 (17km)</strong></li>
-                            <li class="flex justify-between items-center gap-2"><span>🚌 삼달리꽃밭 → 감귤따기</span><strong class="text-slate-900 shrink-0">약 45분 (26km)</strong></li>
-                            <li class="flex justify-between items-center gap-2"><span>🚌 감귤따기 →(석식)→ 호텔</span><strong class="text-slate-900 shrink-0">약 1시간 15분 (38km)</strong></li>
+                            <li class="flex justify-between items-center gap-2"><span>🚌 호텔 → 스카이워터쇼</span><strong class="text-slate-900 shrink-0">약 50분</strong></li>
+                            <li class="flex justify-between items-center gap-2"><span>🚌 워터쇼 →(중식)→ 삼달리꽃밭</span><strong class="text-slate-900 shrink-0">약 35분</strong></li>
+                            <li class="flex justify-between items-center gap-2"><span>🚌 삼달리꽃밭 → 감귤따기</span><strong class="text-slate-900 shrink-0">약 45분</strong></li>
+                            <li class="flex justify-between items-center gap-2"><span>🚌 감귤따기 → 알로에숲</span><strong class="text-slate-900 shrink-0">약 35분</strong></li>
+                            <li class="flex justify-between items-center gap-2"><span>🚌 알로에숲 →(석식)→ 호텔</span><strong class="text-slate-900 shrink-0">약 1시간 10분</strong></li>
                         </ul>
                     </div>
                     <div class="bg-emerald-50/60 rounded-xl p-4 border border-emerald-100">
                         <p class="font-black text-emerald-800 text-sm mb-2.5 flex items-center justify-between">
                             <span>3일차 (12/21 월)</span>
-                            <span class="text-[11px] bg-white text-emerald-700 px-2 py-0.5 rounded-full border border-emerald-200">중산간·제주시·귀국</span>
+                            <span class="text-[11px] bg-white text-emerald-700 px-2 py-0.5 rounded-full border border-emerald-200">제주시·귀국</span>
                         </p>
                         <ul class="space-y-2 text-slate-700">
-                            <li class="flex justify-between items-center gap-2"><span>🚌 호텔 → 농수산쇼핑센타</span><strong class="text-slate-900 shrink-0">약 20분 (3km)</strong></li>
-                            <li class="flex justify-between items-center gap-2"><span>🚌 농수산쇼핑 → 사려니숲길</span><strong class="text-slate-900 shrink-0">약 45분 (21km)</strong></li>
-                            <li class="flex justify-between items-center gap-2"><span>🚌 사려니숲길 → 족욕체험</span><strong class="text-slate-900 shrink-0">약 45분 (21km)</strong></li>
-                            <li class="flex justify-between items-center gap-2"><span>🚌 족욕 →(중식)→ 제주공항</span><strong class="text-slate-900 shrink-0">약 25분 (5km)</strong></li>
+                            <li class="flex justify-between items-center gap-2"><span>🚌 호텔 → 농수산쇼핑센타</span><strong class="text-slate-900 shrink-0">약 20분</strong></li>
+                            <li class="flex justify-between items-center gap-2"><span>🚌 농수산쇼핑 → 아로마족욕</span><strong class="text-slate-900 shrink-0">약 20분</strong></li>
+                            <li class="flex justify-between items-center gap-2"><span>🚌 족욕 →(중식)→ 제주공항</span><strong class="text-slate-900 shrink-0">약 25분</strong></li>
                             <li class="flex justify-between items-center gap-2"><span>✈️ 제주공항 → 청주공항</span><strong class="text-emerald-700 shrink-0">1시간 10분 (실비행)</strong></li>
                         </ul>
                     </div>
@@ -467,7 +484,7 @@
                     </div>
                 </div>
                 <div class="text-center mb-10">
-                    <p class="text-xs text-red-500 font-bold bg-red-50 inline-block px-3 py-1 rounded-full shadow-sm"><i class="fa-solid fa-circle-exclamation"></i> 상기 상세 일정은 항공 및 현지 사정에 의해 변동될 수 있습니다.</p>
+                    <p class="text-xs text-red-500 font-bold bg-red-50 inline-block px-3 py-1 rounded-full shadow-sm"><i class="fa-solid fa-circle-exclamation"></i> 항공 시간은 안내 스케줄 기준이며, 그 외 현지 관광·식사·체험 시간은 현장 사정에 따라 변동될 수 있습니다.</p>
                 </div>
                 <div class="flex overflow-x-auto no-scrollbar gap-2 mb-8 justify-start md:justify-center px-2">
                     <button class="tab-btn active shrink-0 px-5 py-3 rounded-2xl border-2 border-indigo-600 bg-indigo-600 text-white font-bold text-sm transition" onclick="openTab(event, 'day1')">1일차 (12/19 토)</button>
@@ -477,230 +494,187 @@
                 <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
                     <div id="day1" class="tab-content p-8">
                         <div class="flex items-center gap-4 mb-6">
-                            <span class="text-4xl bg-sky-100 p-3 rounded-2xl">🚢</span>
+                            <span class="text-4xl bg-sky-100 p-3 rounded-2xl">🌿</span>
                             <div>
-                                <h3 class="font-bold text-2xl text-slate-800 font-title">청주에서 제주, 유람선과 포토</h3>
-                                <p class="text-sky-700 font-medium text-sm">청주공항 → 제주공항 → 산방산유람선 → 새별오름(또는 이호테우) → 에어시티호텔</p>
+                                <h3 class="font-bold text-2xl text-slate-800 font-title">청주에서 제주, 곶자왈·교육</h3>
+                                <p class="text-sky-700 font-medium text-sm">정선 집결 → 청주공항 → 제주공항 → 산양곶자왈 → 새별오름 → 문화교육 → 에어시티호텔</p>
                             </div>
                         </div>
                         <div class="space-y-6">
                             <div class="relative pl-8 border-l-2 border-sky-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-indigo-500"></div>
-                                <h4 class="font-bold text-lg">청주공항 도착 및 탑승수속</h4>
-                                <p class="text-slate-500 text-sm mt-1">신분증 원본을 준비해 단체 수속에 맞춰 주세요. (출발 1시간 30분 전 집결 권장)</p>
+                                <h4 class="font-bold text-lg">정선군청 주차장 집결 · 청주공항 이동</h4>
+                                <p class="text-slate-500 text-sm mt-1">정선에서 전세버스로 청주공항에 이동합니다. 이동·휴게 시간은 교통 상황에 따라 달라질 수 있습니다.</p>
+                            </div>
+                            <div class="relative pl-8 border-l-2 border-sky-200">
+                                <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-slate-500"></div>
+                                <h4 class="font-bold text-lg">청주공항 탑승수속</h4>
+                                <p class="text-slate-500 text-sm mt-1">신분증 원본을 준비해 단체 수속에 맞춰 주세요.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-sky-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-blue-400"></div>
                                 <div class="flex flex-wrap items-center gap-2">
-                                    <h4 class="font-bold text-lg">10:40 청주 출발 · 11:50 제주 도착</h4>
-                                    <span class="bg-sky-100 text-sky-800 text-xs font-bold px-2.5 py-0.5 rounded-full">✈️ 실비행 1시간 10분</span>
+                                    <h4 class="font-bold text-lg">10:50 청주 출발 · 12:05 제주 도착</h4>
+                                    <span class="bg-sky-100 text-sky-800 text-xs font-bold px-2.5 py-0.5 rounded-full">✈️ 실비행 1시간 15분</span>
                                 </div>
                                 <p class="text-slate-500 text-sm mt-1">제주공항 도착 후 수하물 수취 및 현지 기사님 미팅 뒤 이동합니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-sky-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-red-400"></div>
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <h4 class="font-bold text-lg">중식 (흑우불고기정식)</h4>
-                                    <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 공항→식당 약 20~25분</span>
-                                </div>
-                                <p class="text-slate-500 text-sm mt-1">공항에서 중식 장소로 이동합니다.</p>
+                                <h4 class="font-bold text-lg">중식 (흑우불고기정식)</h4>
+                                <p class="text-slate-500 text-sm mt-1">중식 장소·시간은 현지 사정에 따라 안내드립니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-sky-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-cyan-500"></div>
                                 <div class="schedule-media">
                                     <div class="schedule-desc">
-                                        <div class="flex flex-wrap items-center gap-2">
-                                            <h4 class="font-bold text-lg">산방산유람선</h4>
-                                            <span class="bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 평화로 단체이동 약 55분~1시간 (공항기준 총 1시간 15분)</span>
-                                        </div>
-                                        <p class="text-slate-500 text-sm mt-1">산방산 인근으로 이동한 뒤 서귀포 앞바다를 유람선으로 둘러봅니다.</p>
+                                        <h4 class="font-bold text-lg">산양곶자왈 탐방</h4>
+                                        <p class="text-slate-500 text-sm mt-1">제주의 곶자왈 숲길을 걸으며 힐링·문화 체험을 합니다. 전세버스로 이동합니다.</p>
                                     </div>
-                                    <img src="assets/images/day1-sanbang.jpg" alt="산방산유람선" class="schedule-thumb">
+                                    <img src="assets/images/day1-gotjawal.jpg" alt="산양곶자왈" class="schedule-thumb">
                                 </div>
                             </div>
                             <div class="relative pl-8 border-l-2 border-sky-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-violet-500"></div>
                                 <div class="schedule-media">
                                     <div class="schedule-desc">
-                                        <div class="flex flex-wrap items-center gap-2">
-                                            <h4 class="font-bold text-lg">새별오름 입구 사진샷 또는 이호테우 말등대 (택1)</h4>
-                                            <span class="bg-violet-50 text-violet-700 border border-violet-200 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 단체이동 약 40분 (이호테우 선택 시 약 1시간)</span>
-                                        </div>
-                                        <p class="text-slate-500 text-sm mt-1">현장 도로·기상 상황에 따라 한 곳에서 포토타임을 갖습니다. (지도 동선은 새별오름 기준)</p>
+                                        <h4 class="font-bold text-lg">새별오름 입구 사진샷</h4>
+                                        <p class="text-slate-500 text-sm mt-1">새별오름 입구에서 단체 포토타임을 갖습니다.</p>
                                     </div>
-                                    <img src="assets/images/day1-iho.jpg" alt="이호테우 말등대" class="schedule-thumb">
+                                    <img src="assets/images/day1-saebyeol.jpg" alt="새별오름" class="schedule-thumb">
                                 </div>
+                            </div>
+                            <div class="relative pl-8 border-l-2 border-sky-200">
+                                <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-indigo-600"></div>
+                                <h4 class="font-bold text-lg">여성단체 문화교육</h4>
+                                <p class="text-slate-500 text-sm mt-1">에어시티호텔 세미나실 · 강사 현은희 · 주제: 나만의 이미지를 찾아 나의 인상과 스타일 이해하기</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-sky-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-rose-500"></div>
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <h4 class="font-bold text-lg">석식 (회정식)</h4>
-                                    <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 제주시내 진입 약 35~40분</span>
-                                </div>
-                                <p class="text-slate-500 text-sm mt-1">저녁 시간대 제주시내(노형·연동) 진입 도로 정체를 감안해 이동합니다.</p>
+                                <h4 class="font-bold text-lg">석식 (회정식)</h4>
+                                <p class="text-slate-500 text-sm mt-1">코스 석식 후 숙소로 이동합니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-sky-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-slate-600"></div>
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <h4 class="font-bold text-lg">숙소 도착 및 체크인</h4>
-                                    <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 식당→호텔 약 15분 (새별오름 기준 총 50분)</span>
-                                </div>
+                                <h4 class="font-bold text-lg">숙소 체크인 및 휴식</h4>
                                 <p class="text-slate-500 text-sm mt-1">제주시 에어시티호텔 또는 동급호텔 · 2박</p>
                             </div>
                         </div>
                     </div>
                     <div id="day2" class="tab-content hidden p-8">
                         <div class="flex items-center gap-4 mb-6">
-                            <span class="text-4xl bg-green-100 p-3 rounded-2xl">🚂</span>
+                            <span class="text-4xl bg-green-100 p-3 rounded-2xl">💦</span>
                             <div>
-                                <h3 class="font-bold text-2xl text-slate-800 font-title">에코랜드·워터쇼·꽃밭·감귤</h3>
-                                <p class="text-green-700 font-medium text-sm">에코랜드 → 스카이워터쇼 → 삼달리 꽃밭 → 감귤따기 → 에어시티호텔</p>
+                                <h3 class="font-bold text-2xl text-slate-800 font-title">워터쇼·꽃밭·감귤·알로에</h3>
+                                <p class="text-green-700 font-medium text-sm">소통시간 → 스카이워터쇼 → 삼달리 꽃밭 → 감귤따기 → 김정문알로에숲 → 에어시티호텔</p>
                             </div>
                         </div>
                         <div class="space-y-6">
                             <div class="relative pl-8 border-l-2 border-green-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-teal-400"></div>
-                                <h4 class="font-bold text-lg">기상 및 조식 후 관광 출발</h4>
-                                <p class="text-slate-500 text-sm mt-1">호텔식 조식 · 단체 탑승 및 인원 점검 후 출발</p>
+                                <h4 class="font-bold text-lg">기상 및 호텔식 조식</h4>
+                                <p class="text-slate-500 text-sm mt-1">호텔에서 조식 후 일정에 맞춰 이동합니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-green-200">
-                                <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-green-600"></div>
-                                <div class="schedule-media">
-                                    <div class="schedule-desc">
-                                        <div class="flex flex-wrap items-center gap-2">
-                                            <h4 class="font-bold text-lg">에코랜드</h4>
-                                            <span class="bg-green-50 text-green-700 border border-green-200 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 단체이동 약 50분 (21km)</span>
-                                        </div>
-                                        <p class="text-slate-500 text-sm mt-1">제주시내 신호 및 번영로·비자림로 중산간 도로 사정을 반영해 이동하며, 곶자왈 관광궤도열차로 화산송이 숲길을 지나갑니다.</p>
-                                    </div>
-                                    <img src="assets/images/day2-ecoland.jpg" alt="제주 에코랜드" class="schedule-thumb">
-                                </div>
+                                <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-lime-600"></div>
+                                <h4 class="font-bold text-lg">소통과 화합의 시간</h4>
+                                <p class="text-slate-500 text-sm mt-1">추천 카페에서 각 회원단체의 고충을 나누는 소통·화합 시간을 갖습니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-green-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-cyan-500"></div>
                                 <div class="schedule-media">
                                     <div class="schedule-desc">
-                                        <div class="flex flex-wrap items-center gap-2">
-                                            <h4 class="font-bold text-lg">스카이워터쇼</h4>
-                                            <span class="bg-cyan-50 text-cyan-700 border border-cyan-200 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 단체이동 약 25분 (9km)</span>
-                                        </div>
-                                        <p class="text-slate-500 text-sm mt-1">공연 시간에 맞춰 단체 주차·입장 여유 시간을 포함해 이동하며, 물과 음악이 어우러진 공연을 관람합니다.</p>
+                                        <h4 class="font-bold text-lg">스카이워터쇼 관람</h4>
+                                        <p class="text-slate-500 text-sm mt-1">물과 음악이 어우러진 공연을 관람합니다. 공연 회차는 현지 안내에 따릅니다.</p>
                                     </div>
                                     <img src="assets/images/day2-skywatershow.jpg" alt="스카이워터쇼" class="schedule-thumb">
                                 </div>
                             </div>
                             <div class="relative pl-8 border-l-2 border-green-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-amber-500"></div>
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <h4 class="font-bold text-lg">중식 (통갈치구이모듬세트 3~4인)</h4>
-                                    <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 인근 식당 이동 약 15~20분</span>
-                                </div>
+                                <h4 class="font-bold text-lg">중식 (통갈치구이 모듬세트)</h4>
+                                <p class="text-slate-500 text-sm mt-1">중식 장소·시간은 현지 사정에 따라 안내드립니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-green-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-pink-500"></div>
                                 <div class="schedule-media">
                                     <div class="schedule-desc">
-                                        <div class="flex flex-wrap items-center gap-2">
-                                            <h4 class="font-bold text-lg">삼달리 꽃밭에서 (동백)</h4>
-                                            <span class="bg-pink-50 text-pink-700 border border-pink-200 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 단체이동 약 35분 (워터쇼 기준 17km)</span>
-                                        </div>
-                                        <p class="text-slate-500 text-sm mt-1">삼달리꽃밭으로 이동한 뒤 동백 포토타임을 갖습니다.</p>
+                                        <h4 class="font-bold text-lg">삼달리 꽃밭</h4>
+                                        <p class="text-slate-500 text-sm mt-1">삼달리 꽃밭에서 힐링·문화 체험과 포토타임을 갖습니다.</p>
                                     </div>
-                                    <img src="assets/images/day2-camellia.jpg" alt="삼달리 동백 꽃밭" class="schedule-thumb">
+                                    <img src="assets/images/day2-camellia.jpg" alt="삼달리 꽃밭" class="schedule-thumb">
                                 </div>
                             </div>
                             <div class="relative pl-8 border-l-2 border-green-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-orange-500"></div>
                                 <div class="schedule-media">
                                     <div class="schedule-desc">
-                                        <div class="flex flex-wrap items-center gap-2">
-                                            <h4 class="font-bold text-lg">감귤따기</h4>
-                                            <span class="bg-orange-50 text-orange-700 border border-orange-200 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 단체이동 약 45분 (26km)</span>
-                                        </div>
-                                        <p class="text-slate-500 text-sm mt-1">일주동로·중산간 도로 이동 후 무한 시식과 함께 감귤 1kg를 제공합니다.</p>
+                                        <h4 class="font-bold text-lg">감귤따기 체험·관람</h4>
+                                        <p class="text-slate-500 text-sm mt-1">감귤 체험과 시식을 즐깁니다. 제공 내용·이동은 현장 안내에 따릅니다.</p>
                                     </div>
                                     <img src="assets/images/day2-tangerine.jpg" alt="제주 감귤따기" class="schedule-thumb">
                                 </div>
                             </div>
                             <div class="relative pl-8 border-l-2 border-green-200">
-                                <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-rose-500"></div>
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <h4 class="font-bold text-lg">석식 (흑돼지구이 1인분)</h4>
-                                    <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 제주시 복귀 이동 약 55분~1시간</span>
+                                <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-emerald-600"></div>
+                                <div class="schedule-media">
+                                    <div class="schedule-desc">
+                                        <h4 class="font-bold text-lg">김정문알로에숲</h4>
+                                        <p class="text-slate-500 text-sm mt-1">알로에숲을 둘러보며 문화·관광 체험을 합니다.</p>
+                                    </div>
+                                    <img src="assets/images/day2-aloe.jpg" alt="김정문알로에숲" class="schedule-thumb">
                                 </div>
-                                <p class="text-slate-500 text-sm mt-1">5·16도로/번영로 중산간 도로 및 저녁 시간대 제주시내 정체를 감안해 이동합니다.</p>
+                            </div>
+                            <div class="relative pl-8 border-l-2 border-green-200">
+                                <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-rose-500"></div>
+                                <h4 class="font-bold text-lg">석식 (흑돼지구이)</h4>
+                                <p class="text-slate-500 text-sm mt-1">석식 후 숙소로 이동합니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-green-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-slate-600"></div>
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <h4 class="font-bold text-lg">숙소 도착 및 자유시간</h4>
-                                    <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 식당→호텔 약 15분 (감귤밭 기준 총 1시간 15분)</span>
-                                </div>
+                                <h4 class="font-bold text-lg">숙소 도착 및 휴식</h4>
                                 <p class="text-slate-500 text-sm mt-1">제주시 에어시티호텔 또는 동급호텔</p>
                             </div>
                         </div>
                     </div>
                     <div id="day3" class="tab-content hidden p-8">
                         <div class="flex items-center gap-4 mb-6">
-                            <span class="text-4xl bg-emerald-100 p-3 rounded-2xl">🌲</span>
+                            <span class="text-4xl bg-emerald-100 p-3 rounded-2xl">🛍️</span>
                             <div>
-                                <h3 class="font-bold text-2xl text-slate-800 font-title">사려니숲길, 족욕, 그리고 청주로</h3>
-                                <p class="text-emerald-700 font-medium text-sm">농수산쇼핑 → 사려니숲길 → 족욕 → 제주공항 → 청주</p>
+                                <h3 class="font-bold text-2xl text-slate-800 font-title">쇼핑·족욕, 그리고 청주로</h3>
+                                <p class="text-emerald-700 font-medium text-sm">농수산물쇼핑 → 아로마족욕 → 제주공항 → 청주 → 정선</p>
                             </div>
                         </div>
                         <div class="space-y-6">
                             <div class="relative pl-8 border-l-2 border-emerald-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-teal-400"></div>
-                                <h4 class="font-bold text-lg">기상 및 조식 후 관광 출발</h4>
+                                <h4 class="font-bold text-lg">조식 및 체크아웃</h4>
                                 <p class="text-slate-500 text-sm mt-1">호텔식 조식 후 짐을 챙겨 체크아웃하고 출발합니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-emerald-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-amber-600"></div>
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <h4 class="font-bold text-lg">농수산쇼핑센타</h4>
-                                    <span class="bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 단체이동 약 20분 (3km)</span>
-                                </div>
+                                <h4 class="font-bold text-lg">농수산물쇼핑센타</h4>
                                 <p class="text-slate-500 text-sm mt-1">제주 농수산물을 둘러보며 기념품·특산물을 고를 수 있습니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-emerald-200">
-                                <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-green-600"></div>
-                                <div class="schedule-media">
-                                    <div class="schedule-desc">
-                                        <div class="flex flex-wrap items-center gap-2">
-                                            <h4 class="font-bold text-lg">사려니숲길</h4>
-                                            <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 단체이동 약 45분 (21km)</span>
-                                        </div>
-                                        <p class="text-slate-500 text-sm mt-1">사려니숲길에 도착해 삼림욕을 즐깁니다.</p>
-                                    </div>
-                                    <img src="assets/images/day3-saryeoni.jpg" alt="사려니숲길" class="schedule-thumb">
-                                </div>
-                            </div>
-                            <div class="relative pl-8 border-l-2 border-emerald-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-violet-500"></div>
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <h4 class="font-bold text-lg">아로마족욕 또는 한방족욕 (택1)</h4>
-                                    <span class="bg-violet-50 text-violet-700 border border-violet-200 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 단체이동 약 45분 (21km)</span>
-                                </div>
-                                <p class="text-slate-500 text-sm mt-1">사려니숲길에서 제주시내로 복귀 후 현장 안내에 따라 한 가지로 진행합니다.</p>
+                                <h4 class="font-bold text-lg">아로마족욕</h4>
+                                <p class="text-slate-500 text-sm mt-1">힐링·문화 체험으로 아로마족욕을 진행합니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-emerald-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-amber-500"></div>
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <h4 class="font-bold text-lg">중식 (토종닭샤브샤브)</h4>
-                                    <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 인근 식당 이동 약 15분</span>
-                                </div>
+                                <h4 class="font-bold text-lg">중식 (토종닭샤브샤브)</h4>
+                                <p class="text-slate-500 text-sm mt-1">중식 후 제주공항으로 이동합니다.</p>
                             </div>
                             <div class="relative pl-8 border-l-2 border-emerald-200">
                                 <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-slate-800"></div>
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <h4 class="font-bold text-lg">13:00 제주공항 도착 후 탑승수속</h4>
-                                    <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full">🚌 식당→공항 약 15~20분 (족욕장 기준 총 25분)</span>
-                                </div>
+                                <h4 class="font-bold text-lg">제주공항 탑승수속</h4>
                                 <p class="text-slate-500 text-sm mt-1">단체 수하물 하차 및 국내선 수속 · 신분증 원본 지참</p>
                             </div>
                             <div class="bg-indigo-50 p-6 rounded-2xl border border-indigo-200 mt-8 text-center shadow-sm">
                                 <p class="text-sm font-bold text-slate-800">✈️ 14:05 제주 출발 <span class="text-indigo-600 font-extrabold">(실비행 1시간 10분)</span></p>
                                 <p class="text-sm mt-2 font-bold text-slate-800">🛬 15:15 청주공항 도착</p>
+                                <p class="text-xs text-slate-500 mt-3">청주공항 도착 후 정선으로 이동합니다. 이동·휴게 시간은 교통 상황에 따라 달라질 수 있습니다.</p>
                             </div>
                         </div>
                     </div>
@@ -729,7 +703,7 @@
                 <div class="p-6 md:p-8 grid md:grid-cols-2 gap-6">
                     <div>
                         <h3 class="text-xl font-bold text-slate-800 font-title mb-2">제주시 에어시티호텔 또는 동급호텔</h3>
-                        <p class="text-sm text-slate-600 leading-relaxed">제주특별자치도 제주시 삼무로 56 (연동)<br>16명 · 4성급 · 2박</p>
+                        <p class="text-sm text-slate-600 leading-relaxed">제주특별자치도 제주시 삼무로 56 (연동)<br>4성급 · 2박</p>
                         <ul class="mt-4 text-sm text-slate-600 space-y-1.5">
                             <li><i class="fa-solid fa-location-dot text-indigo-500 w-4"></i> 제주시 연동 · 삼무로 56</li>
                             <li><i class="fa-solid fa-star text-indigo-500 w-4"></i> 4성급 또는 동급</li>
@@ -885,12 +859,9 @@
         <footer class="bg-slate-100 pt-10 pb-16 text-center no-print border-t px-4 print:hidden">
         <div class="max-w-3xl mx-auto">
             <div class="bg-white rounded-3xl p-6 md:p-8 border border-blue-100 shadow-md mb-8 text-left md:text-center">
-                <div class="flex flex-wrap items-center justify-between md:justify-center gap-2 mb-3">
+                <div class="flex flex-wrap items-center justify-center gap-2 mb-3">
                     <span class="inline-flex items-center gap-1.5 bg-blue-50 text-[#004098] text-xs font-extrabold px-3 py-1 rounded-full border border-blue-200">
                         <i class="fa-solid fa-wand-magic-sparkles"></i> TOURMAKER SMART GUIDEBOOK
-                    </span>
-                    <span class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1 rounded-full">
-                        <i class="fa-solid fa-eye text-[#004098]"></i> 📊 실시간 가이드북 열람 : <strong class="tm-view-count-val text-[#004098]">...</strong>회
                     </span>
                 </div>
                 <h3 class="text-lg md:text-xl font-extrabold text-slate-800 mb-1.5">우리 모임 · 학교 · 기관도 스마트 가이드북으로 여행을 준비해 보세요</h3>
@@ -903,6 +874,13 @@
                         투어메이커 홈페이지 <i class="fa-solid fa-chevron-right text-xs"></i>
                     </a>
                 </div>
+            </div>
+            <div class="w-full mb-5 px-4 py-3 rounded-xl bg-slate-200/70 border border-slate-300 text-[11px] text-slate-600 leading-relaxed text-left">
+                <p class="font-bold text-slate-800 mb-0.5">
+                    <i class="fa-solid fa-shield-halved text-[#004098] mr-1"></i> 지적재산권 보호 및 외부 유출 금지 안내
+                </p>
+                본 스마트 가이드북은 <strong>(주)투어메이커의 고유 지적재산</strong>입니다.
+                <strong class="tm-client-name">정선군여성단체협의회</strong> 전용 제안서·스마트 가이드북이며, 외부 유출 시 <strong>접속 IP 및 열람 횟수(현재 <span class="tm-view-count-val font-extrabold text-red-600">...</span>회)가 자동 기록</strong>됩니다.
             </div>
             <div class="pt-4 border-t border-slate-300/50">
                 <p class="text-[11px] font-black text-[#004098] mb-2 tracking-wider">[System Powered by TOURMAKER]</p>
@@ -929,8 +907,8 @@
             </div>
             <div class="print-overview-slim">
                 <div class="print-overview-item"><span class="label">기간</span><span class="value">2026.12.19(토) ~ 12.21(월) · 2박3일</span></div>
-                <div class="print-overview-item"><span class="label">인원</span><span class="value">16명</span></div>
-                <div class="print-overview-item"><span class="label">항공</span><span class="value print-nowrap">청주 10:40→제주 11:50 / 제주 14:05→청주 15:15</span></div>
+                <div class="print-overview-item"><span class="label">숙소</span><span class="value">에어시티호텔 또는 동급</span></div>
+                <div class="print-overview-item"><span class="label">항공</span><span class="value print-nowrap">청주 10:50→제주 12:05 / 제주 14:05→청주 15:15</span></div>
             </div>
             <table class="print-table">
                 <thead>
@@ -944,10 +922,10 @@
                     <tr class="print-day-divider">
                         <td class="print-col-date">12/19<br>(토)<br>1일차</td>
                         <td class="print-col-desc">
-                            <div class="print-time-flow"><span class="print-time-tag">오전</span>청주공항 수속 → 10:40 출발 → 11:50 제주 도착 · 현지 미팅</div>
+                            <div class="print-time-flow"><span class="print-time-tag">오전</span>정선 집결 → 청주공항 수속 → 10:50 출발 → 12:05 제주 도착 · 현지 미팅</div>
                             <ul class="print-desc-list">
-                                <li>중식 후 <span class="print-highlight">산방산유람선</span></li>
-                                <li><span class="print-highlight">새별오름 입구 사진샷</span> 또는 <span class="print-highlight">이호테우 말등대</span> 택1</li>
+                                <li>중식 후 <span class="print-highlight">산양곶자왈</span> → <span class="print-highlight">새별오름 입구 사진샷</span></li>
+                                <li>에어시티호텔 세미나실 <span class="print-highlight">여성단체 문화교육</span>(강사 현은희)</li>
                                 <li>석식 후 에어시티호텔(또는 동급) 체크인</li>
                             </ul>
                             <hr class="print-hotel-divider">
@@ -964,29 +942,28 @@
                     <tr class="print-day-divider">
                         <td class="print-col-date">12/20<br>(일)<br>2일차</td>
                         <td class="print-col-desc">
-                            <div class="print-time-flow"><span class="print-time-tag">종일</span>조식 후 관광</div>
+                            <div class="print-time-flow"><span class="print-time-tag">종일</span>조식 후 관광 · 현지 사정에 따라 시간 조정</div>
                             <ul class="print-desc-list">
-                                <li><span class="print-highlight">에코랜드</span> → <span class="print-highlight">스카이워터쇼</span></li>
-                                <li>중식 후 <span class="print-highlight">삼달리 꽃밭(동백)</span> → <span class="print-highlight">감귤따기</span>(무한시식·1kg)</li>
-                                <li>석식 후 자유시간</li>
+                                <li>소통과 화합의 시간(카페) → <span class="print-highlight">스카이워터쇼</span></li>
+                                <li>중식 후 <span class="print-highlight">삼달리 꽃밭</span> → <span class="print-highlight">감귤따기</span> → <span class="print-highlight">김정문알로에숲</span></li>
+                                <li>석식 후 숙소 휴식</li>
                             </ul>
                         </td>
                         <td class="print-col-meal">
                             <div class="print-meal-wrapper">
                                 <div class="print-meal-simple"><strong>조:</strong><div class="print-meal-menu">호텔식</div></div>
-                                <div class="print-meal-simple"><strong>중:</strong><div class="print-meal-menu">통갈치구이<br>모듬세트<span class="print-meal-sub">3~4인</span></div></div>
-                                <div class="print-meal-simple"><strong>석:</strong><div class="print-meal-menu">흑돼지구이<span class="print-meal-sub">1인분</span></div></div>
+                                <div class="print-meal-simple"><strong>중:</strong><div class="print-meal-menu">통갈치구이<br>모듬세트</div></div>
+                                <div class="print-meal-simple"><strong>석:</strong><div class="print-meal-menu">흑돼지구이</div></div>
                             </div>
                         </td>
                     </tr>
                     <tr class="print-day-divider">
                         <td class="print-col-date">12/21<br>(월)<br>3일차</td>
                         <td class="print-col-desc">
-                            <div class="print-time-flow"><span class="print-time-tag">오전</span>조식·체크아웃 후 관광</div>
+                            <div class="print-time-flow"><span class="print-time-tag">오전</span>조식·체크아웃 후 관광 · 현지 사정에 따라 시간 조정</div>
                             <ul class="print-desc-list">
-                                <li><span class="print-highlight">농수산쇼핑센타</span> → <span class="print-highlight">사려니숲길</span></li>
-                                <li><span class="print-highlight">아로마족욕</span> 또는 <span class="print-highlight">한방족욕</span> 택1</li>
-                                <li>중식 후 13:00 제주공항 수속 → 14:05 출발 → 15:15 청주 도착</li>
+                                <li><span class="print-highlight">농수산물쇼핑센타</span> → <span class="print-highlight">아로마족욕</span></li>
+                                <li>중식 후 제주공항 수속 → 14:05 출발 → 15:15 청주 도착 → 정선 이동</li>
                             </ul>
                         </td>
                         <td class="print-col-meal">
@@ -999,7 +976,7 @@
                     </tr>
                 </tbody>
             </table>
-            <p class="print-remarks">※ 일정은 항공·현지 사정에 따라 변동될 수 있습니다.</p>
+            <p class="print-remarks">※ 항공 시간은 안내 스케줄 기준이며, 그 외 현지 관광·식사·체험 시간은 현장 사정에 따라 변동될 수 있습니다.</p>
             <div class="print-contacts">
                 <div><span class="pc-role">총괄</span>이재명 010-9443-7881</div>
                 <div><span class="pc-role">담당</span>배부근 010-9362-8265</div>
@@ -1072,7 +1049,9 @@
             '2026-12-20': 'day2',
             '2026-12-21': 'day3'
         };
-        const PRINT_FILENAME = '261219_정선군여성단체협의회_제주_일정표';
+        const PRINT_FILENAME = '261219_제주_일정표';
+        const EVENT_START = '2026-12-19';
+        const EVENT_END = '2026-12-21';
         const PAGE_TITLE = document.title;
         window.addEventListener('beforeprint', () => { document.title = PRINT_FILENAME; });
         window.addEventListener('afterprint', () => { document.title = PAGE_TITLE; });
@@ -1299,77 +1278,72 @@ let mapInited = false;
         const osrmCache = {};
         const mapHints = {
             all: '전체 여정 — 청주 ↔ 제주 항공(점선) + 제주 현지 도로 동선',
-            day1: '1일차 동선 — 청주 → 제주공항 → 산방산 → 새별오름 → 호텔',
-            day2: '2일차 동선 — 호텔 → 에코랜드 → 스카이워터쇼 → 삼달리 → 감귤따기 → 호텔',
-            day3: '3일차 동선 — 호텔 → 농수산쇼핑 → 사려니 → 족욕 → 제주공항 → 청주'
+            day1: '1일차 동선 — 청주 → 제주공항 → 산양곶자왈 → 새별오름 → 호텔',
+            day2: '2일차 동선 — 호텔 → 스카이워터쇼 → 삼달리 → 감귤따기 → 알로에숲 → 호텔',
+            day3: '3일차 동선 — 호텔 → 농수산쇼핑 → 족욕 → 제주공항 → 청주'
         };
         const spots = {
             cheongjuAirport: { coords: [36.7166, 127.4991], title: '청주공항', color: '#1e293b', icon: '✈️' },
             jejuAirport: { coords: [33.5070, 126.4930], title: '제주공항', color: '#1e293b', icon: '🛬' },
-            sanbang: { coords: [33.2415, 126.3135], title: '산방산유람선', color: '#0284c7', icon: '🚢' },
+            gotjawal: { coords: [33.2957, 126.2520], title: '산양곶자왈', color: '#0284c7', icon: '🌿' },
             saebyeol: { coords: [33.3665, 126.3570], title: '새별오름', color: '#7c3aed', icon: '📷' },
-            iho: { coords: [33.4975, 126.4528], title: '이호테우(택1)', color: '#6366f1', icon: '🗼' },
             hotel: { coords: [33.4896, 126.4926], title: '에어시티호텔', color: '#0f766e', icon: '🏨' },
-            ecoland: { coords: [33.4558, 126.6680], title: '에코랜드', color: '#16a34a', icon: '🚂' },
             skywater: { coords: [33.4386, 126.7318], title: '스카이워터쇼', color: '#06b6d4', icon: '💦' },
             samdal: { coords: [33.3718, 126.8365], title: '삼달리꽃밭', color: '#db2777', icon: '🌺' },
             tangerine: { coords: [33.2801, 126.6208], title: '감귤따기', color: '#f59e0b', icon: '🍊' },
+            aloe: { coords: [33.3843, 126.8060], title: '김정문알로에숲', color: '#16a34a', icon: '🪴' },
             shopping: { coords: [33.4898, 126.4872], title: '농수산쇼핑', color: '#64748b', icon: '🛍️' },
-            saryeoni: { coords: [33.4305, 126.6440], title: '사려니숲길', color: '#15803d', icon: '🌲' },
-            footbath: { coords: [33.4905, 126.4885], title: '족욕', color: '#a855f7', icon: '🦶' }
+            footbath: { coords: [33.4905, 126.4885], title: '아로마족욕', color: '#a855f7', icon: '🦶' }
         };
         const routes = {
             all: {
-                points: ['cheongjuAirport', 'jejuAirport', 'sanbang', 'saebyeol', 'hotel', 'ecoland', 'skywater', 'samdal', 'tangerine', 'shopping', 'saryeoni', 'footbath'],
+                points: ['cheongjuAirport', 'jejuAirport', 'gotjawal', 'saebyeol', 'hotel', 'skywater', 'samdal', 'tangerine', 'aloe', 'shopping', 'footbath'],
                 maxZoom: 8,
                 lines: [
                     { pts: ['cheongjuAirport', 'jejuAirport'], color: '#004098', mode: 'air' },
-                    { pts: ['jejuAirport', 'sanbang', 'saebyeol', 'hotel'], color: '#0284c7' },
-                    { pts: ['hotel', 'ecoland', 'skywater', 'samdal', 'tangerine', 'hotel'], color: '#16a34a' },
-                    { pts: ['hotel', 'shopping', 'saryeoni', 'footbath', 'jejuAirport'], color: '#15803d' },
+                    { pts: ['jejuAirport', 'gotjawal', 'saebyeol', 'hotel'], color: '#0284c7' },
+                    { pts: ['hotel', 'skywater', 'samdal', 'tangerine', 'aloe', 'hotel'], color: '#16a34a' },
+                    { pts: ['hotel', 'shopping', 'footbath', 'jejuAirport'], color: '#15803d' },
                     { pts: ['jejuAirport', 'cheongjuAirport'], color: '#64748b', mode: 'air' }
                 ]
             },
             day1: {
-                points: ['cheongjuAirport', 'jejuAirport', 'sanbang', 'saebyeol', 'hotel'],
+                points: ['cheongjuAirport', 'jejuAirport', 'gotjawal', 'saebyeol', 'hotel'],
                 maxZoom: 11,
                 lines: [
                     { pts: ['cheongjuAirport', 'jejuAirport'], color: '#004098', mode: 'air' },
-                    { pts: ['jejuAirport', 'sanbang', 'saebyeol', 'hotel'], color: '#0284c7' }
+                    { pts: ['jejuAirport', 'gotjawal', 'saebyeol', 'hotel'], color: '#0284c7' }
                 ]
             },
             day2: {
-                points: ['hotel', 'ecoland', 'skywater', 'samdal', 'tangerine'],
+                points: ['hotel', 'skywater', 'samdal', 'tangerine', 'aloe'],
                 maxZoom: 11,
-                lines: [{ pts: ['hotel', 'ecoland', 'skywater', 'samdal', 'tangerine', 'hotel'], color: '#16a34a' }]
+                lines: [{ pts: ['hotel', 'skywater', 'samdal', 'tangerine', 'aloe', 'hotel'], color: '#16a34a' }]
             },
             day3: {
-                points: ['hotel', 'shopping', 'saryeoni', 'footbath', 'jejuAirport', 'cheongjuAirport'],
+                points: ['hotel', 'shopping', 'footbath', 'jejuAirport', 'cheongjuAirport'],
                 maxZoom: 11,
                 lines: [
-                    { pts: ['hotel', 'shopping', 'saryeoni', 'footbath', 'jejuAirport'], color: '#15803d' },
+                    { pts: ['hotel', 'shopping', 'footbath', 'jejuAirport'], color: '#15803d' },
                     { pts: ['jejuAirport', 'cheongjuAirport'], color: '#64748b', mode: 'air' }
                 ]
             }
         };
-        // 실제 항공 스케줄(청주↔제주 1시간 10분) 및 제주 현지 도로사정(5030 구간단속·중산간 도로·시내 신호) + 16명 단체버스 승하차·인원점검을 보수적으로 반영한 구간별 소요시간(분)
+        // 항공은 실비행, 현지 도로는 대략 기준(현장 사정에 따라 변동)
         const CONSERVATIVE_LEG_MINUTES = {
-            'cheongjuAirport->jejuAirport': 70, // 10:40 출발 → 11:50 도착 (실비행 1시간 10분)
-            'jejuAirport->sanbang': 75,         // 공항 미팅·중식 경유·평화로 구간단속·화순항 대형버스 주차 (약 1시간 15분)
-            'sanbang->saebyeol': 40,            // 화순항 → 새별오름 중산간 도로 및 단체 승하차 (약 40분)
-            'sanbang->iho': 60,                 // 화순항 → 이호테우 말등대 선택 시 (약 1시간)
-            'saebyeol->hotel': 50,              // 새별오름 → 석식 경유·저녁 제주시내 정체 반영 (약 50분)
-            'iho->hotel': 25,                   // 이호테우 → 호텔 선택 시 (약 25분)
-            'hotel->ecoland': 50,               // 제주시내 신호 + 번영로/비자림로 중산간 오르막 대형버스 주행 (약 50분)
-            'ecoland->skywater': 25,            // 비자림로 이동 및 공연장 대형버스 주차·입장 이동 (약 25분)
-            'skywater->samdal': 35,             // 중식 경유 + 성읍~삼달리 읍면 도로 대형버스 서행 (약 35분)
-            'samdal->tangerine': 45,            // 삼달리 → 남원/서귀포 일주동로·중산간 신호 및 단체 승하차 (약 45분)
-            'tangerine->hotel': 75,             // 서귀포권 → 5·16/번영로 중산간 → 석식 경유·제주시 저녁 정체 (약 1시간 15분)
-            'hotel->shopping': 20,              // 체크아웃 수하물 적재 + 제주시내 신호·단체 승하차 (약 20분)
-            'shopping->saryeoni': 45,           // 제주시내 → 사려니숲길 중산간 도로 서행 및 주차장 이동 (약 45분)
-            'saryeoni->footbath': 45,           // 사려니숲길 → 제주시내 복귀 도로사정 및 단체 승하차 (약 45분)
-            'footbath->jejuAirport': 25,        // 중식 경유 → 제주공항 진입 및 단체 수하물 하차 (약 25분)
-            'jejuAirport->cheongjuAirport': 70  // 14:05 출발 → 15:15 도착 (실비행 1시간 10분)
+            'cheongjuAirport->jejuAirport': 75, // 10:50 출발 → 12:05 도착
+            'jejuAirport->gotjawal': 70,
+            'gotjawal->saebyeol': 25,
+            'saebyeol->hotel': 40,
+            'hotel->skywater': 50,
+            'skywater->samdal': 35,
+            'samdal->tangerine': 45,
+            'tangerine->aloe': 35,
+            'aloe->hotel': 70,
+            'hotel->shopping': 20,
+            'shopping->footbath': 20,
+            'footbath->jejuAirport': 25,
+            'jejuAirport->cheongjuAirport': 70  // 14:05 출발 → 15:15 도착
         };
         function isMobileView() { return window.matchMedia('(max-width: 768px)').matches; }
         function pathMeters(path) {
@@ -1398,7 +1372,7 @@ let mapInited = false;
             if (legKey && CONSERVATIVE_LEG_MINUTES[legKey]) return CONSERVATIVE_LEG_MINUTES[legKey] * 60;
             if (!seconds || seconds <= 0) return 0;
             if (mode === 'air') return seconds;
-            // 제주 5030 속도제한·중산간 도로사정 + 16명 단체버스 승하차·인원점검 여유를 보수적으로 반영
+            // 제주 도로·단체 승하차 여유를 반영한 대략 기준
             return Math.max(20 * 60, seconds * 1.55 + 15 * 60);
         }
         function formatApproxTime(seconds) {
@@ -1834,6 +1808,8 @@ let mapInited = false;
 <script>
         const TM_GUIDEBOOK_SLUG = '261219_Jeju';
         const TM_GUIDEBOOK_NAME = '정선군여성단체협의회 제주';
+        const TM_CLIENT_NAME = '정선군여성단체협의회';
+        document.querySelectorAll('.tm-client-name').forEach((el) => { el.textContent = TM_CLIENT_NAME; });
         const TM_KAKAO_ID = 'inseodaeun';
         async function connectTmKakaoId() {
             trackTmInquiry('kakao_id');
@@ -1912,6 +1888,96 @@ let mapInited = false;
             els.forEach(el => { el.textContent = count.toLocaleString(); });
         }
         initTmViewCounter();
+
+        (function initSecurityShield() {
+            const isEditable = (el) => {
+                if (!el) return false;
+                const tag = (el.tagName || '').toUpperCase();
+                return tag === 'INPUT' || tag === 'TEXTAREA' || el.isContentEditable;
+            };
+            document.addEventListener('contextmenu', (e) => {
+                if (isEditable(e.target)) return;
+                e.preventDefault();
+            });
+            document.addEventListener('selectstart', (e) => {
+                if (isEditable(e.target)) return;
+                e.preventDefault();
+            });
+            document.addEventListener('dragstart', (e) => {
+                if (isEditable(e.target)) return;
+                e.preventDefault();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (isEditable(e.target)) return;
+                const key = (e.key || '').toUpperCase();
+                const mod = e.ctrlKey || e.metaKey;
+                if (
+                    key === 'F12' ||
+                    (mod && e.shiftKey && ['I', 'J', 'C'].includes(key)) ||
+                    (mod && ['C', 'U', 'S'].includes(key))
+                ) {
+                    e.preventDefault();
+                    if (typeof showToast === 'function') {
+                        showToast('🔒 투어메이커 저작권 보호 문서로 복사 및 소스 열람이 제한됩니다.');
+                    }
+                }
+            });
+        })();
+
+        (function initSmartSecurityLock() {
+            const VALID_PASSWORDS = ['1219'];
+            function unlockStorageKey(today) {
+                if (today > EVENT_END) return 'tm_unlocked_after_' + EVENT_END;
+                return 'tm_unlocked_' + EVENT_START;
+            }
+            function setLockVisible(on) {
+                const modal = document.getElementById('guidebook-lock-modal');
+                if (!modal) return;
+                modal.classList.toggle('hidden', !on);
+                modal.classList.toggle('flex', on);
+                document.documentElement.style.overflow = on ? 'hidden' : '';
+                document.body.style.overflow = on ? 'hidden' : '';
+            }
+            function shouldRequirePassword() {
+                const today = getGuidebookToday();
+                if (ymdDiffDays(EVENT_START, today) > 14) return true;
+                if (today > EVENT_END) return true;
+                return false;
+            }
+            function checkLockCondition() {
+                const today = getGuidebookToday();
+                const unlocked = localStorage.getItem(unlockStorageKey(today)) === 'true';
+                if (shouldRequirePassword() && !unlocked) {
+                    setLockVisible(true);
+                    const input = document.getElementById('lock-password-input');
+                    if (input) setTimeout(() => input.focus(), 80);
+                } else {
+                    setLockVisible(false);
+                }
+            }
+            window.verifyGuidebookPassword = function () {
+                const inputEl = document.getElementById('lock-password-input');
+                const errorMsg = document.getElementById('lock-error-msg');
+                const inputVal = (inputEl?.value || '').trim();
+                if (VALID_PASSWORDS.includes(inputVal)) {
+                    localStorage.setItem(unlockStorageKey(getGuidebookToday()), 'true');
+                    if (errorMsg) errorMsg.classList.add('hidden');
+                    setLockVisible(false);
+                    if (typeof showToast === 'function') showToast('🔓 인증되었습니다. 가이드북을 열람합니다.');
+                } else {
+                    if (errorMsg) errorMsg.classList.remove('hidden');
+                    if (inputEl) {
+                        inputEl.classList.add('border-rose-500', 'shake');
+                        setTimeout(() => inputEl.classList.remove('border-rose-500', 'shake'), 500);
+                        inputEl.select();
+                    }
+                }
+            };
+            document.getElementById('lock-password-input')?.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') window.verifyGuidebookPassword();
+            });
+            checkLockCondition();
+        })();
 </script>
 
 </body>
