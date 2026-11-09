@@ -107,7 +107,8 @@
             body { background-color: #ffffff !important; font-size: 10pt; color: #1e293b !important; }
             a[href]:after { content: none !important; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            .print-hidden, .print\:hidden { display: none !important; }
+            .print-hidden, .print\:hidden, .no-print,
+            header, footer, #event-day-bar, #guidebook-lock-modal, #tm-inquiry-modal { display: none !important; }
             #print-area { display: block !important; width: 100%; color: #1e293b; font-family: 'Noto Sans KR', sans-serif; }
             .print-page-container { width: 100%; margin: 0; padding: 0; }
             .print-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #004098; padding-bottom: 8px; margin-bottom: 15px; }
@@ -167,11 +168,12 @@
     </style>
 </head>
 <body class="antialiased pb-20 md:pb-0 print:pb-0 print:bg-white tm-secure-select">
+    <!-- [Security Lock Modal] 출발 2주 전(D-14) 자동 해제형 보안 잠금 · 비번: 출발일 MMDD · 행사 종료 후 재잠금 -->
     <div id="guidebook-lock-modal" class="fixed inset-0 z-[999] hidden items-center justify-center bg-slate-900/90 backdrop-blur-md px-4 no-print print-hidden" role="dialog" aria-modal="true" aria-labelledby="guidebook-lock-title">
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 md:p-8 shadow-2xl text-center border border-slate-100 animate-fade-in-up">
             <div class="w-16 h-16 bg-blue-50 text-[#004098] rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-sm"><i class="fa-solid fa-lock"></i></div>
             <h3 id="guidebook-lock-title" class="text-xl font-bold text-slate-800 mb-1">보안 접속 인증</h3>
-            <p class="text-xs text-slate-500 mb-6 leading-relaxed">본 가이드북은 저작권 및 일정 보호를 위해<br>출발 2주 전까지 비밀번호 인증이 필요합니다.<br>
+            <p class="text-xs text-slate-500 mb-6 leading-relaxed">본 가이드북은 저작권·무단도용 방지를 위해<br>출발 2주 전까지 비밀번호 인증이 필요합니다.<br>
                 <span class="text-xs font-bold text-[#004098] mt-1 block">💡 힌트: 출발일 MM월DD일 → MMDD (예: 01월01일 → 0101)</span>
             </p>
             <div class="space-y-3">
@@ -802,12 +804,34 @@
                     <p class="text-[11px] sm:text-xs text-slate-600 leading-relaxed bg-white p-3 rounded-lg border border-green-100" id="esg-desc">계산중...</p>
                 </div>
             </div>
+            <div id="smart-security" class="max-w-6xl mx-auto mt-5 sm:mt-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                    <span class="inline-flex items-center gap-1.5 bg-[#004098]/10 text-[#004098] text-[11px] font-extrabold px-2.5 py-1 rounded-full border border-[#004098]/20">
+                        <i class="fa-solid fa-shield-halved"></i> SMART SECURITY
+                    </span>
+                    <h3 class="font-bold text-slate-800 text-sm sm:text-base font-title">출발일 비밀번호 · 무단도용 방지</h3>
+                </div>
+                <div class="grid sm:grid-cols-3 gap-3 text-xs text-slate-600">
+                    <div class="rounded-xl bg-slate-50 border border-slate-100 p-3.5">
+                        <p class="font-bold text-slate-800 mb-1"><i class="fa-solid fa-key text-[#004098] mr-1"></i> 출발일 스마트 잠금</p>
+                        <p class="leading-relaxed">출발 2주 전(D-14)까지 비밀번호(출발일 MMDD) 인증이 필요합니다. D-14부터 자동 해제됩니다.</p>
+                    </div>
+                    <div class="rounded-xl bg-slate-50 border border-slate-100 p-3.5">
+                        <p class="font-bold text-slate-800 mb-1"><i class="fa-solid fa-ban text-[#004098] mr-1"></i> 복사·유출 차단</p>
+                        <p class="leading-relaxed">우클릭·드래그·복사 및 개발자도구 단축키를 제한해 일정·기획 콘텐츠의 무단 복제를 막습니다.</p>
+                    </div>
+                    <div class="rounded-xl bg-slate-50 border border-slate-100 p-3.5">
+                        <p class="font-bold text-slate-800 mb-1"><i class="fa-solid fa-eye text-[#004098] mr-1"></i> 열람·접속 기록</p>
+                        <p class="leading-relaxed">외부 유출 시 접속 IP와 실시간 열람 횟수가 자동 기록되어 무단도용을 추적합니다.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
         <footer class="bg-slate-100 pt-10 pb-16 text-center no-print border-t px-4 print:hidden">
         <div class="max-w-3xl mx-auto">
-            <div class="bg-white rounded-3xl p-6 md:p-8 border border-blue-100 shadow-md mb-8 text-left md:text-center">
+            <div class="bg-white rounded-3xl p-6 md:p-8 border border-blue-100 shadow-md mb-5 text-left md:text-center w-full">
                 <div class="flex flex-wrap items-center justify-center gap-2 mb-3">
                     <span class="inline-flex items-center gap-1.5 bg-blue-50 text-[#004098] text-xs font-extrabold px-3 py-1 rounded-full border border-blue-200">
                         <i class="fa-solid fa-wand-magic-sparkles"></i> TOURMAKER SMART GUIDEBOOK
@@ -826,12 +850,12 @@
             </div>
             <div class="w-full mb-5 px-4 py-3 rounded-xl bg-slate-200/70 border border-slate-300 text-[11px] text-slate-600 leading-relaxed text-left">
                 <p class="font-bold text-slate-800 mb-0.5">
-                    <i class="fa-solid fa-shield-halved text-[#004098] mr-1"></i> 지적재산권 보호 및 외부 유출 금지 안내
+                    <i class="fa-solid fa-shield-halved text-[#004098] mr-1"></i> 지적재산권 보호 · 무단도용 방지 안내
                 </p>
                 본 스마트 가이드북은 <strong>(주)투어메이커의 고유 지적재산</strong>입니다.
                 <strong class="tm-client-name">정선군여성단체협의회</strong> 전용 제안서·스마트 가이드북이며, 외부 유출 시 <strong>접속 IP 및 열람 횟수(현재 <span class="tm-view-count-val font-extrabold text-red-600">...</span>회)가 자동 기록</strong>됩니다.
             </div>
-            <div class="pt-4 border-t border-slate-300/50">
+            <div class="pt-4 border-t border-slate-300/50 w-full">
                 <p class="text-[11px] font-black text-[#004098] mb-2 tracking-wider">[System Powered by TOURMAKER]</p>
                 <p class="text-xs text-slate-500 font-medium leading-relaxed">본 스마트 가이드북은 <strong>정선군여성단체협의회</strong> 제주 여행 일정 안내와 <a href="https://tourmaker.kr" target="_blank" rel="noopener" class="font-bold underline">투어메이커</a>의 트래블 테크 기술 제휴로 제작되었습니다.</p>
             </div>
