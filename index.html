@@ -137,57 +137,73 @@
                 font-size: 24px; font-weight: 700; color: #0f172a;
                 letter-spacing: -0.5px; margin: 0; line-height: 1.35;
             }
-            .print-overview-slim {
-                display: flex; justify-content: space-between; gap: 10px;
-                background-color: #f8fafc !important; border: 1px solid #94a3b8; border-radius: 6px;
-                padding: 12px 20px; margin-bottom: 16px; font-size: 14px; word-break: keep-all;
-                flex-shrink: 0;
+            .print-overview-grid {
+                display: grid; grid-template-columns: 1.15fr 1fr 1.2fr; gap: 8px;
+                margin-bottom: 14px; flex-shrink: 0;
             }
-            .print-overview-item { display: flex; gap: 8px; align-items: flex-start; min-width: 0; }
-            .print-overview-slim .label { font-weight: 700; color: #004098; white-space: nowrap; flex-shrink: 0; }
-            .print-overview-slim .value { line-height: 1.45; color: #1e293b; }
+            .print-overview-card {
+                background-color: #f8fafc !important; border: 1px solid #94a3b8; border-radius: 6px;
+                padding: 10px 12px; min-width: 0;
+            }
+            .print-overview-card .label {
+                display: block; font-size: 11.5px; font-weight: 700; color: #004098;
+                margin-bottom: 4px; letter-spacing: -0.2px;
+            }
+            .print-overview-card .value {
+                display: block; font-size: 13px; font-weight: 600; color: #0f172a;
+                line-height: 1.35; word-break: keep-all; overflow-wrap: normal;
+            }
             .print-nowrap { white-space: nowrap; }
             .print-table {
                 width: 100%; border-collapse: collapse; margin-bottom: 12px;
-                font-size: 13.5px; table-layout: fixed; border: 2px solid #1e293b;
+                font-size: 12.5px; table-layout: fixed; border: 2px solid #1e293b;
                 flex: 1 1 auto; height: 100%;
             }
             .print-table thead { display: table-header-group; }
             .print-table tbody { height: 100%; }
             .print-table th, .print-table td {
-                border: 1px solid #1e293b; padding: 14px 16px; vertical-align: top;
-                page-break-inside: avoid; word-break: keep-all;
+                border: 1px solid #1e293b; padding: 12px 12px; vertical-align: top;
+                page-break-inside: avoid; word-break: keep-all; overflow-wrap: normal;
             }
             .print-table th {
                 background-color: #f8fafc !important; color: #1e293b; font-weight: 700;
-                text-align: center; font-size: 14.5px; padding: 12px;
+                text-align: center; font-size: 13.5px; padding: 10px;
             }
             .print-table tr { page-break-inside: avoid; }
             .print-table tbody tr { height: 33.33%; }
             .print-col-date {
-                width: 14%; text-align: center; font-weight: 700;
-                vertical-align: middle; background-color: #f8fafc !important; font-size: 14px; line-height: 1.45;
+                width: 12%; text-align: center; font-weight: 700;
+                vertical-align: middle; background-color: #f8fafc !important; font-size: 13.5px; line-height: 1.45;
             }
-            .print-col-desc { width: 70%; }
-            .print-col-meal { width: 16%; text-align: center; vertical-align: middle; }
+            .print-col-desc { width: 73%; }
+            .print-col-meal { width: 15%; text-align: center; vertical-align: middle; }
             .print-day-divider td { border-top: 2px solid #1e293b !important; }
-            .print-time-flow { margin-bottom: 8px; font-weight: 500; font-size: 13.5px; line-height: 1.55; }
-            .print-time-tag { display: inline-block; color: #004098; font-weight: 700; margin-right: 5px; }
+            .print-time-flow {
+                margin-bottom: 6px; font-weight: 500; font-size: 12.5px; line-height: 1.45;
+                white-space: nowrap; word-break: keep-all;
+            }
+            .print-time-tag { display: inline; color: #004098; font-weight: 700; margin-right: 4px; }
             .print-highlight { font-weight: 700; color: #0f172a; }
-            .print-desc-list { list-style: none; margin: 8px 0; padding-left: 5px; font-size: 13.5px; }
-            .print-desc-list li { position: relative; padding-left: 14px; margin-bottom: 6px; line-height: 1.6; }
-            .print-desc-list li::before { content: '■'; font-size: 8px; position: absolute; left: 0; top: 5px; color: #004098; }
-            .print-hotel-divider { border: 0; border-top: 1px dashed #94a3b8; margin: 15px 0 10px 0; }
-            .print-hotel-info { font-size: 14px; color: #0f172a; font-weight: 700; }
+            .print-desc-list { list-style: none; margin: 6px 0; padding-left: 4px; font-size: 12.5px; }
+            .print-desc-list li {
+                position: relative; padding-left: 12px; margin-bottom: 5px; line-height: 1.45;
+                white-space: nowrap; word-break: keep-all;
+            }
+            .print-desc-list li::before { content: '■'; font-size: 8px; position: absolute; left: 0; top: 4px; color: #004098; }
+            .print-hotel-divider { border: 0; border-top: 1px dashed #94a3b8; margin: 12px 0 8px 0; }
+            .print-hotel-info { font-size: 12.5px; color: #0f172a; font-weight: 700; word-break: keep-all; }
             .print-hotel-info i { color: #004098; margin-right: 6px; }
             .print-meal-wrapper {
-                display: flex; flex-direction: column; gap: 14px; justify-content: center;
-                height: 100%; text-align: left; padding-left: 5px;
+                display: flex; flex-direction: column; gap: 12px; justify-content: center;
+                height: 100%; text-align: left; padding-left: 2px;
             }
-            .print-meal-simple { display: flex; align-items: flex-start; line-height: 1.4; font-size: 14px; color: #1e293b; }
-            .print-meal-simple strong { color: #004098; margin-right: 4px; width: 22px; flex-shrink: 0; }
-            .print-meal-menu { display: flex; flex-direction: column; min-width: 0; flex: 1; word-break: keep-all; }
-            .print-meal-sub { display: block; font-size: 13.5px; margin-top: 2px; color: #475569; }
+            .print-meal-simple {
+                display: flex; align-items: baseline; gap: 2px;
+                line-height: 1.35; font-size: 12.5px; color: #1e293b; white-space: nowrap;
+            }
+            .print-meal-simple strong { color: #004098; margin-right: 2px; flex-shrink: 0; }
+            .print-meal-menu { min-width: 0; word-break: keep-all; white-space: nowrap; }
+            .print-meal-sub { display: inline; font-size: inherit; margin: 0; color: inherit; }
             .print-remarks {
                 font-size: 12.5px; color: #64748b; text-align: right; font-weight: 500;
                 margin: 0 0 14px 0; line-height: 1.55; flex-shrink: 0;
@@ -919,10 +935,19 @@
             <div class="print-title-section">
                 <h1>정선군여성단체협의회 제주 여행 일정표</h1>
             </div>
-            <div class="print-overview-slim">
-                <div class="print-overview-item"><span class="label">행사기간</span><span class="value">2026. 12. 19 (토) ~ 12. 21 (월)</span></div>
-                <div class="print-overview-item"><span class="label">숙소</span><span class="value">에어시티호텔 또는 동급 · 2박</span></div>
-                <div class="print-overview-item"><span class="label">이용항공</span><span class="value print-nowrap">진에어 · 청주→제주 / 제주→원주</span></div>
+            <div class="print-overview-grid">
+                <div class="print-overview-card">
+                    <span class="label">기간</span>
+                    <span class="value print-nowrap">2026.12.19(토) ~ 12.21(월)</span>
+                </div>
+                <div class="print-overview-card">
+                    <span class="label">숙소</span>
+                    <span class="value">에어시티호텔 또는 동급 · 2박</span>
+                </div>
+                <div class="print-overview-card">
+                    <span class="label">항공</span>
+                    <span class="value">진에어 · 청주↔제주↔원주</span>
+                </div>
             </div>
             <table class="print-table">
                 <thead>
@@ -936,23 +961,20 @@
                     <tr class="print-day-divider">
                         <td class="print-col-date"><strong>1일차</strong><br>12/19 (토)</td>
                         <td class="print-col-desc">
-                            <div class="print-time-flow"><span class="print-time-tag">06:30</span>정선군청 주차장 집결 · 출발</div>
-                            <div class="print-time-flow"><span class="print-time-tag">06:30~09:30</span>청주공항 이동 (약 3시간)</div>
-                            <div class="print-time-flow"><span class="print-time-tag">09:30~10:40</span>청주공항 탑승수속</div>
-                            <div class="print-time-flow"><span class="print-time-tag">10:40</span>청주 출발 → <span class="print-time-tag">11:50</span>제주 도착 · 현지 기사님 미팅</div>
+                            <div class="print-time-flow"><span class="print-time-tag">06:30</span>정선군청 주차장 집결 · 출발 → <span class="print-time-tag">06:30~09:30</span>청주공항 이동(약 3시간)</div>
+                            <div class="print-time-flow"><span class="print-time-tag">09:30~10:40</span>청주공항 탑승수속 → <span class="print-time-tag">10:40</span>청주 출발 → <span class="print-time-tag">11:50</span>제주 도착 · 기사님 미팅</div>
                             <ul class="print-desc-list">
                                 <li><span class="print-time-tag">12:30~13:20</span>중식 → <span class="print-time-tag">14:00~14:50</span><span class="print-highlight">카멜리아힐</span></li>
-                                <li><span class="print-time-tag">15:10~16:10</span><span class="print-highlight">산방산유람선</span> (15:20 탑승)</li>
-                                <li><span class="print-time-tag">17:30</span>석식 후 호텔 체크인 및 휴식</li>
+                                <li><span class="print-time-tag">15:10~16:10</span><span class="print-highlight">산방산유람선</span>(15:20 탑승) → <span class="print-time-tag">17:30</span>석식 · 호텔 체크인</li>
                             </ul>
                             <hr class="print-hotel-divider">
                             <div class="print-hotel-info"><i class="fa-solid fa-bed"></i> <strong>호텔명 : 제주시 에어시티호텔</strong> · 삼무로 56 · 064-720-5000</div>
                         </td>
                         <td class="print-col-meal">
                             <div class="print-meal-wrapper">
-                                <div class="print-meal-simple"><strong>조:</strong><div class="print-meal-menu">-</div></div>
-                                <div class="print-meal-simple"><strong>중:</strong><div class="print-meal-menu">통갈치구이<span class="print-meal-sub">모듬세트</span></div></div>
-                                <div class="print-meal-simple"><strong>석:</strong><div class="print-meal-menu">흑돼지구이</div></div>
+                                <div class="print-meal-simple"><strong>조:</strong><span class="print-meal-menu">-</span></div>
+                                <div class="print-meal-simple"><strong>중:</strong><span class="print-meal-menu">통갈치구이 모듬세트</span></div>
+                                <div class="print-meal-simple"><strong>석:</strong><span class="print-meal-menu">흑돼지구이</span></div>
                             </div>
                         </td>
                     </tr>
@@ -963,17 +985,16 @@
                             <ul class="print-desc-list">
                                 <li><span class="print-time-tag">09:00~10:20</span><span class="print-highlight">김정문알로에숲</span> → <span class="print-time-tag">10:40~11:50</span><span class="print-highlight">스카이워터쇼</span></li>
                                 <li><span class="print-time-tag">12:20~13:20</span>중식 → <span class="print-time-tag">13:40~14:40</span>카페 간담회</li>
-                                <li><span class="print-time-tag">15:00~15:40</span><span class="print-highlight">아로마·한방족욕</span> (택1) → <span class="print-time-tag">16:20~17:00</span><span class="print-highlight">감귤따기</span></li>
-                                <li><span class="print-time-tag">18:00</span>석식 후 숙소 도착 및 자유시간</li>
+                                <li><span class="print-time-tag">15:00~15:40</span><span class="print-highlight">족욕</span>(택1) → <span class="print-time-tag">16:20~17:00</span><span class="print-highlight">감귤따기</span> → <span class="print-time-tag">18:00</span>석식</li>
                             </ul>
                             <hr class="print-hotel-divider">
                             <div class="print-hotel-info"><i class="fa-solid fa-bed"></i> <strong>호텔명 : 제주시 에어시티호텔</strong></div>
                         </td>
                         <td class="print-col-meal">
                             <div class="print-meal-wrapper">
-                                <div class="print-meal-simple"><strong>조:</strong><div class="print-meal-menu">호텔식</div></div>
-                                <div class="print-meal-simple"><strong>중:</strong><div class="print-meal-menu">토종닭<span class="print-meal-sub">샤브샤브</span></div></div>
-                                <div class="print-meal-simple"><strong>석:</strong><div class="print-meal-menu">회정식</div></div>
+                                <div class="print-meal-simple"><strong>조:</strong><span class="print-meal-menu">호텔식</span></div>
+                                <div class="print-meal-simple"><strong>중:</strong><span class="print-meal-menu">토종닭샤브샤브</span></div>
+                                <div class="print-meal-simple"><strong>석:</strong><span class="print-meal-menu">회정식</span></div>
                             </div>
                         </td>
                     </tr>
@@ -982,18 +1003,16 @@
                         <td class="print-col-desc">
                             <div class="print-time-flow"><span class="print-time-tag">07:30~09:00</span>호텔 조식 · 체크아웃</div>
                             <ul class="print-desc-list">
-                                <li><span class="print-time-tag">09:00~11:00</span>에어시티호텔 세미나실 <span class="print-highlight">여성단체 문화교육</span> (2시간 · 강사 현은희)</li>
-                                <li><span class="print-time-tag">11:20~11:50</span><span class="print-highlight">농수산물쇼핑센타</span></li>
-                                <li><span class="print-time-tag">12:10~12:50</span>중식 후 <span class="print-time-tag">13:10</span>제주공항 도착 · 탑승수속</li>
+                                <li><span class="print-time-tag">09:00~11:00</span>세미나실 <span class="print-highlight">여성단체 문화교육</span>(2시간 · 강사 현은희)</li>
+                                <li><span class="print-time-tag">11:20~11:50</span><span class="print-highlight">농수산물쇼핑센타</span> → <span class="print-time-tag">12:10~12:50</span>중식 → <span class="print-time-tag">13:10</span>제주공항</li>
                             </ul>
-                            <div class="print-time-flow" style="margin-top:10px;"><span class="print-time-tag">14:20</span>제주 출발 → <span class="print-time-tag">15:35</span>원주공항 도착</div>
-                            <div class="print-time-flow"><span class="print-time-tag">15:35~18:00</span>원주공항 → 정선 이동 (약 1시간 30분~2시간 · 교통 상황에 따라 변동)</div>
+                            <div class="print-time-flow" style="margin-top:8px;"><span class="print-time-tag">14:20</span>제주 출발 → <span class="print-time-tag">15:35</span>원주 도착 → <span class="print-time-tag">15:35~18:00</span>정선 이동</div>
                         </td>
                         <td class="print-col-meal">
                             <div class="print-meal-wrapper">
-                                <div class="print-meal-simple"><strong>조:</strong><div class="print-meal-menu">호텔식</div></div>
-                                <div class="print-meal-simple"><strong>중:</strong><div class="print-meal-menu">흑우불고기<span class="print-meal-sub">정식</span></div></div>
-                                <div class="print-meal-simple"><strong>석:</strong><div class="print-meal-menu">-</div></div>
+                                <div class="print-meal-simple"><strong>조:</strong><span class="print-meal-menu">호텔식</span></div>
+                                <div class="print-meal-simple"><strong>중:</strong><span class="print-meal-menu">흑우불고기정식</span></div>
+                                <div class="print-meal-simple"><strong>석:</strong><span class="print-meal-menu">-</span></div>
                             </div>
                         </td>
                     </tr>
