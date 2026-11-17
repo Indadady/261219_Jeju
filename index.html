@@ -179,17 +179,17 @@
             .print-col-meal { width: 15%; text-align: center; vertical-align: middle; }
             .print-day-divider td { border-top: 2px solid #1e293b !important; }
             .print-time-flow {
-                margin-bottom: 6px; font-weight: 500; font-size: 12.5px; line-height: 1.45;
-                white-space: nowrap; word-break: keep-all;
+                margin-bottom: 4px; font-weight: 500; font-size: 12.5px; line-height: 1.4;
+                word-break: keep-all; overflow-wrap: normal;
             }
-            .print-time-tag { display: inline; color: #004098; font-weight: 700; margin-right: 4px; }
+            .print-time-tag { display: inline; color: #004098; font-weight: 700; margin-right: 6px; white-space: nowrap; }
             .print-highlight { font-weight: 700; color: #0f172a; }
-            .print-desc-list { list-style: none; margin: 6px 0; padding-left: 4px; font-size: 12.5px; }
+            .print-desc-list { list-style: none; margin: 4px 0; padding-left: 0; font-size: 12.5px; }
             .print-desc-list li {
-                position: relative; padding-left: 12px; margin-bottom: 5px; line-height: 1.45;
-                white-space: nowrap; word-break: keep-all;
+                position: relative; padding-left: 0; margin-bottom: 4px; line-height: 1.4;
+                word-break: keep-all; overflow-wrap: normal;
             }
-            .print-desc-list li::before { content: '■'; font-size: 8px; position: absolute; left: 0; top: 4px; color: #004098; }
+            .print-desc-list li::before { content: none; }
             .print-hotel-divider { border: 0; border-top: 1px dashed #94a3b8; margin: 12px 0 8px 0; }
             .print-hotel-info { font-size: 12.5px; color: #0f172a; font-weight: 700; word-break: keep-all; }
             .print-hotel-info i { color: #004098; margin-right: 6px; }
@@ -961,12 +961,15 @@
                     <tr class="print-day-divider">
                         <td class="print-col-date"><strong>1일차</strong><br>12/19 (토)</td>
                         <td class="print-col-desc">
-                            <div class="print-time-flow"><span class="print-time-tag">06:30</span>정선군청 주차장 집결 · 출발 → <span class="print-time-tag">06:30~09:30</span>청주공항 이동(약 3시간)</div>
-                            <div class="print-time-flow"><span class="print-time-tag">09:30~10:40</span>청주공항 탑승수속 → <span class="print-time-tag">10:40</span>청주 출발 → <span class="print-time-tag">11:50</span>제주 도착 · 기사님 미팅</div>
-                            <ul class="print-desc-list">
-                                <li><span class="print-time-tag">12:30~13:20</span>중식 → <span class="print-time-tag">14:00~14:50</span><span class="print-highlight">카멜리아힐</span></li>
-                                <li><span class="print-time-tag">15:10~16:10</span><span class="print-highlight">산방산유람선</span>(15:20 탑승) → <span class="print-time-tag">17:30</span>석식 · 호텔 체크인</li>
-                            </ul>
+                            <div class="print-time-flow"><span class="print-time-tag">06:30</span>정선군청 주차장 집결 · 출발</div>
+                            <div class="print-time-flow"><span class="print-time-tag">06:30~09:30</span>청주공항 이동 (약 3시간)</div>
+                            <div class="print-time-flow"><span class="print-time-tag">09:30~10:40</span>청주공항 탑승수속</div>
+                            <div class="print-time-flow"><span class="print-time-tag">10:40</span>청주 출발</div>
+                            <div class="print-time-flow"><span class="print-time-tag">11:50</span>제주 도착 · 현지 기사님 미팅</div>
+                            <div class="print-time-flow"><span class="print-time-tag">12:30~13:20</span>중식</div>
+                            <div class="print-time-flow"><span class="print-time-tag">14:00~14:50</span><span class="print-highlight">카멜리아힐</span></div>
+                            <div class="print-time-flow"><span class="print-time-tag">15:10~16:10</span><span class="print-highlight">산방산유람선</span> (15:20 탑승)</div>
+                            <div class="print-time-flow"><span class="print-time-tag">17:30</span>석식 · 호텔 체크인 및 휴식</div>
                             <hr class="print-hotel-divider">
                             <div class="print-hotel-info"><i class="fa-solid fa-bed"></i> <strong>호텔명 : 제주시 에어시티호텔</strong> · 삼무로 56 · 064-720-5000</div>
                         </td>
@@ -982,11 +985,13 @@
                         <td class="print-col-date"><strong>2일차</strong><br>12/20 (일)</td>
                         <td class="print-col-desc">
                             <div class="print-time-flow"><span class="print-time-tag">07:30~09:00</span>호텔 조식 후 관광</div>
-                            <ul class="print-desc-list">
-                                <li><span class="print-time-tag">09:00~10:20</span><span class="print-highlight">김정문알로에숲</span> → <span class="print-time-tag">10:40~11:50</span><span class="print-highlight">스카이워터쇼</span></li>
-                                <li><span class="print-time-tag">12:20~13:20</span>중식 → <span class="print-time-tag">13:40~14:40</span>카페 간담회</li>
-                                <li><span class="print-time-tag">15:00~15:40</span><span class="print-highlight">족욕</span>(택1) → <span class="print-time-tag">16:20~17:00</span><span class="print-highlight">감귤따기</span> → <span class="print-time-tag">18:00</span>석식</li>
-                            </ul>
+                            <div class="print-time-flow"><span class="print-time-tag">09:00~10:20</span><span class="print-highlight">김정문알로에숲</span></div>
+                            <div class="print-time-flow"><span class="print-time-tag">10:40~11:50</span><span class="print-highlight">스카이워터쇼</span></div>
+                            <div class="print-time-flow"><span class="print-time-tag">12:20~13:20</span>중식</div>
+                            <div class="print-time-flow"><span class="print-time-tag">13:40~14:40</span>카페 간담회</div>
+                            <div class="print-time-flow"><span class="print-time-tag">15:00~15:40</span><span class="print-highlight">아로마·한방족욕</span> (택1)</div>
+                            <div class="print-time-flow"><span class="print-time-tag">16:20~17:00</span><span class="print-highlight">감귤따기</span></div>
+                            <div class="print-time-flow"><span class="print-time-tag">18:00</span>석식 · 숙소 도착 및 자유시간</div>
                             <hr class="print-hotel-divider">
                             <div class="print-hotel-info"><i class="fa-solid fa-bed"></i> <strong>호텔명 : 제주시 에어시티호텔</strong></div>
                         </td>
@@ -1002,11 +1007,13 @@
                         <td class="print-col-date"><strong>3일차</strong><br>12/21 (월)</td>
                         <td class="print-col-desc">
                             <div class="print-time-flow"><span class="print-time-tag">07:30~09:00</span>호텔 조식 · 체크아웃</div>
-                            <ul class="print-desc-list">
-                                <li><span class="print-time-tag">09:00~11:00</span>세미나실 <span class="print-highlight">여성단체 문화교육</span>(2시간 · 강사 현은희)</li>
-                                <li><span class="print-time-tag">11:20~11:50</span><span class="print-highlight">농수산물쇼핑센타</span> → <span class="print-time-tag">12:10~12:50</span>중식 → <span class="print-time-tag">13:10</span>제주공항</li>
-                            </ul>
-                            <div class="print-time-flow" style="margin-top:8px;"><span class="print-time-tag">14:20</span>제주 출발 → <span class="print-time-tag">15:35</span>원주 도착 → <span class="print-time-tag">15:35~18:00</span>정선 이동</div>
+                            <div class="print-time-flow"><span class="print-time-tag">09:00~11:00</span>세미나실 <span class="print-highlight">여성단체 문화교육</span> (2시간 · 강사 현은희)</div>
+                            <div class="print-time-flow"><span class="print-time-tag">11:20~11:50</span><span class="print-highlight">농수산물쇼핑센타</span></div>
+                            <div class="print-time-flow"><span class="print-time-tag">12:10~12:50</span>중식</div>
+                            <div class="print-time-flow"><span class="print-time-tag">13:10</span>제주공항 도착 · 탑승수속</div>
+                            <div class="print-time-flow"><span class="print-time-tag">14:20</span>제주 출발</div>
+                            <div class="print-time-flow"><span class="print-time-tag">15:35</span>원주공항 도착</div>
+                            <div class="print-time-flow"><span class="print-time-tag">15:35~18:00</span>원주공항 → 정선 이동</div>
                         </td>
                         <td class="print-col-meal">
                             <div class="print-meal-wrapper">
